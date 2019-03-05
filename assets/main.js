@@ -15,5 +15,4 @@ class ValueRepr {
   convert() {
     return this._value * 2;
   }
-
 }

@@ -7,17 +7,18 @@ let app = new Vue({
     poule: 12,
   }),
   computed: {
-
     value: {
       get() {
         return this.valueRepr.value;
       },
       set(value) {
-        this.valueRepr.value = value
-      }
+        this.valueRepr.value = value;
+      },
     },
+  },
+  methods: {
     converted() {
-      return this.valueRepr.convert()
-    }
+      return this.valueRepr.convert();
+    },
   },
 });
