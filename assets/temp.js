@@ -43,18 +43,11 @@ function toBinaireInteger(value, nbBit) {
 	return tabBin;
 }
 
-function cleanTab(binTab) {
-
-}
-
 function toBinaireDecimal(value, nbBit) {
 	let tabBin = [];
-	let valueFloat = value
-	//taille Mantisse
-	let count = nbBit;
-	console.log(nbBit);
+	let value = this.FloatValue;
 
-	for (let i = 0; i < count; i++) {
+	for (let i = 0; i < this.nbBit; i++) {
 		valueFloat = valueFloat * 2;
 		if (valueFloat < 1) {
 			tabBin.push(0);
@@ -77,7 +70,7 @@ function getExponant(tabBin, posComma) {
 }
 
 function cleanTab(tabBinInt) {
-	tabBin = [];
+	let tabBin = [];
 	let i = 0;
 	let flag = 0;
 	while (i < tabBinInt.length){
@@ -111,14 +104,22 @@ function toBinaire(value, nbBit) {
 	tabBinInt = cleanTab(tabBinInt);
 	//ajout de la précision avec bit
 	console.log(value % 1);
-	tabBinFloat = tabBinInt.concat(toBinaireDecimal(value % 1,nbBit-9-tabBinInt.length)); 
+	if(isNaN(tabBinInt[0])) {
+		tabBinFloat = toBinaireDecimal(value % 1, nbBit - 9);
+		exponent = 127;
+	} else {
+		tabBinFloat = tabBinInt.concat(toBinaireDecimal(value % 1, nbBit - 9 - tabBinInt.length));
+		exponent = 127 + tabBinInt.length;
+	}
+	 //reste des valeurs par rapport à la table entier
 	tabBinFloat = cleanTab(tabBinFloat);
 
 	print(tabBinFloat);
 
 	//Exponent
 	//getExponant(tabBinFloat, tabBinInt.length);
-	exponent = 127 + tabBinInt.length;
+	if(tabBinInt.length > 1)
+	
 	console.log(exponent);
 	console.log(tabBinInt.length);
 	tabBinExp = toBinaireInteger(exponent, 8); // 8 bit exposant
@@ -138,10 +139,10 @@ function print(tabBin) {
 }
 
 
-var input = 32.4;
+var input = 0.3;
 
 console.log(input);
-var tabBin = toBinaire(input, 32);
+let tabBin = toBinaire(input, 32);
 //print(tabBin);
 
 //2*r * PI = Perimetre
