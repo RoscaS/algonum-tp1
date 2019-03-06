@@ -5,8 +5,8 @@ class FloatBinary {
 
 	constructor(valueFloat, nbBit) {
 		this.valueFloat = valueFloat;
-		this.nbBitMantisse = nbBit - 9; // il faut parler du format
-		this.nbBitExposant = nbBit - this.nbBitMantisse - 1;
+		this.nbBitMantisse = 23; // il faut parler du format
+		this.nbBitExposant = 8;
 		this.valueBinary = this.toBinary();
 		
 	}
@@ -28,6 +28,11 @@ class FloatBinary {
 
 		//signe
 		let sign = this.getSign();
+		console.log("sign             : " + sign);
+		console.log("exponant         : " + exponent)
+		console.log("exponant binary  : " + tabBinExponent);
+		console.log("mantisse         : " + tabMantisse);
+		
 		
 		//assemble en binaire du Float
 		let tabNormalizeFloat = [sign, ...tabBinExponent,...tabMantisse];
@@ -39,8 +44,8 @@ class FloatBinary {
 		for (let i = 0; i < this.valueBinary.length; i++) {
 			value += this.valueBinary[i];
 		}
-		console.log("Value float  : " + this.valueFloat);
-		console.log("Value binary : " + value);
+		console.log("Value float      : " + this.valueFloat);
+		console.log("Value binary     : " + value);
 	}
 
 	/*                            \
