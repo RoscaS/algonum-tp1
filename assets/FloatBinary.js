@@ -39,7 +39,8 @@ class FloatBinary {
 		for (let i = 0; i < this.valueBinary.length; i++) {
 			value += this.valueBinary[i];
 		}
-		console.log(value);
+		console.log("Value float  : " + this.valueFloat);
+		console.log("Value binary : " + value);
 	}
 
 	/*                            \
