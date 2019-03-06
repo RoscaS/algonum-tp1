@@ -30,23 +30,11 @@ function getSigne(value) {
 	return 0 < value ? 0 : 1;
 }
 
-function getPower(value){
-	var temp = value.toString().split(".")[0].length;
-	if (temp > 1) {
-		power = temp;
-	} else if (value.toString().split(".")[0] != 0) {
-		power = 1;
-	} else {
-		power = 0;
-	}
-	return power;
-}
-
 function toBinaireInteger(value) {
-	var tabBin = [];
-	var valueFloat = value;
-	var count = 15;
-	for(var i = 0; i < count ; i++) {
+	let tabBin = [];
+	let valueFloat = value;
+	let count = 15;
+	for (var i = 0; i < count; i++) {
 		tabBin.push(valueFloat % 2);
 		valueFloat = parseInt(valueFloat / 2);
 	}
@@ -56,11 +44,12 @@ function toBinaireInteger(value) {
 }
 
 function toBinaireDecimal(value) {
-	var tabBin = [];
-	var valueFloat = value
+	let tabBin = [];
+	let valueFloat = value
 	//taille Mantisse
-	var count = 15;
-	for(var i = 0; i < count; i++) {
+	let count = 15;
+
+	for (var i = 0; i < count; i++) {
 		valueFloat = valueFloat * 2;
 		if (valueFloat < 1) {
 			tabBin.push(0);
@@ -69,41 +58,42 @@ function toBinaireDecimal(value) {
 			valueFloat--;
 		}
 	}
-	print(tabBin)	
+	print(tabBin)
 	return tabBin;
 }
 
-function getExponant(tabBin, posComas){
-	var i = 0;
-	while (i < tabBin.length && tabBin[i] != 1){
-		i++;	
+function getExponant(tabBin, posComas) {
+	let i = 0;
+	while (i < tabBin.length && tabBin[i] != 1) {
+		i++;
 	}
 
-	return (127 + (posComas - (i + 1))); //taille int +1 (virgule après)
+	return (127 + (posComas - (i + 1))); //taille int +1 (virgule après) + bit caché
 }
 
-function toBinaire(value)
-{
+function toBinaire(value) {
 	//var power = getPower(value);
 	console.log(value % 1);
 	console.log(parseInt(value));
-	var tabBinInt = [];
-	var tabBinFloat = [];
-	var exponent;
-	
+	let tabBinInt = [];
+	let tabBinFloat = [];
+	let exponent;
+
 	//tabBin
 	tabBinInt = toBinaireInteger(parseInt(value));
 	tabBinFloat = tabBinInt.concat(toBinaireDecimal(value % 1));
-	exponent = getExponant(tabBinFloat, 15); 
+
 	print(tabBinFloat);
 
 	//Exponent
+	exponent = getExponant(tabBinFloat, 15);
 	console.log(exponent);
+	tabBinExp = toBinaireInteger(exponent);
 	tabBinExp = toBinaireInteger(exponent);
 }
 
 function print(tabBin) {
-	var value = "";
+	let value = "";
 	tabBin.forEach(element => {
 		value += element;
 	});
@@ -112,6 +102,14 @@ function print(tabBin) {
 
 
 var input = 263.3;
+
 console.log(input);
 var tabBin = toBinaire(input);
 //print(tabBin);
+
+//2*r * PI = Perimetre
+
+// Diametre = r*2
+//Si Diam = 1 -> Perimetre = PI
+//r = Diam/2
+//
