@@ -38,6 +38,7 @@ class TestBinary {
       for (const sample in test.empirical) {
         console.log(`${sample}:\t${test.empirical[sample]}`);
       }
+      console.log("Converted value : " + convertFloat(test.theoretical));
     });
   }
 

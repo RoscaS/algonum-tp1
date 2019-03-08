@@ -4,18 +4,20 @@ class Binary {
     let splitted = split(stringValue);
     this.value = stringValue;
     this.binarySign = splitted.sign;
-    this.binaryInteger = splitted.integer === '0' ? '' : intToBin(splitted.integer);
-    this.binaryFractional = fractionToBin(splitted.fraction, MANTISSA);
+    this.isUnderOne = splitted.integer == 0;
+    this.binaryInteger = this.isUnderOne ? '' : intToBin(splitted.integer);
+    this.binaryFractional = this.isUnderOne ? fractionToBinUnderOne(splitted.fraction, MANTISSA) : fractionToBin(splitted.fraction, MANTISSA);
     this.binaryScientific = `${this.binaryInteger}.${this.binaryFractional}`;
-    this.exponentBits = this.binaryInteger.length - 1;
+    this.exponentBits = !this.isUnderOne ? this.binaryInteger.length - 1 : MANTISSA - this.binaryFractional.length;
     this.exponent = leadingZeros(intToBin(bias(this.exponentBits)));
-    this.mantissa = `${this.binaryInteger}${this.binaryFractional}`.slice(1, MANTISSA + 1,);
+    this.mantissa = this.isUnderOne ? `${this.binaryInteger}${this.binaryFractional}`.slice(-this.exponentBits, -this.exponentBits + MANTISSA) : `${this.binaryInteger}${this.binaryFractional}`.slice(1, MANTISSA + 1,);
     this.IEEE754 = `${this.binarySign}${this.exponent}${this.mantissa}`;
   }
 
   print() {
     console.log('\n');
     console.log(`Value to convert: ${this.value}`);
+    console.log(`Obtained value : ${convertFloat(this.IEEE754)}`);
     console.log(`\nBinary repr:`);
     console.log(`\tInteger: \t\t${this.binaryInteger}`);
     console.log(`\tFractional: \t${this.binaryFractional}`);

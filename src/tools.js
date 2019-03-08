@@ -31,6 +31,51 @@ function fractionToBin(value, size) {
   return bin;
 }
 
+function fractionToBinUnderOne(value, size){
+  let bin = '';
+  let valueTemp = value;
+  let flag = true;
+  value /= (Math.pow(10, value.toString().length));
+
+  while(flag){
+    let v = value - parseInt(value);
+    (v * 2) > 1 ? flag = false : size++;
+    value *= 2;
+  };
+
+
+  return fractionToBin(valueTemp, size + 1);
+}
+
+
 function bias(exponentBits) {
   return (RANGE['32'].upper + exponentBits).toString();
+}
+
+function convertExponant(tabBin) {
+  let value = 0;
+  let power = 7;
+  for (let index = 1; index < 9; index++) {
+    value += tabBin[index] * Math.pow(2, power);
+    power--;
+  }
+  value -= 127;
+  //console.log("Exponant : " + value);
+  return value;
+}
+
+function convertFloat(tabBin) {
+  let value = 0;
+  let power = -1;
+  for (let index = 9; index < 32; index++) {
+    value += tabBin[index] * Math.pow(2, power);
+    power--;
+  }
+  
+  // Bit implicite
+  value += 1;
+  //console.log("Mantisse : " + value);
+  value *= Math.pow(2, this.convertExponant(tabBin));
+  
+  return value;
 }
