@@ -1,6 +1,6 @@
-
 class Binary {
-  constructor(stringValue) {
+  constructor(stringValue, bits=32) {
+    this.size = RANGES[bits];
     this.value = stringValue;
     this.splitted = split(this.value);
 
@@ -10,11 +10,12 @@ class Binary {
     this.binarySign = this.splitted.sign;
     this.binaryInteger = this._computeBinaryInteger();
     this.binaryFractional = this._computeBinaryFraction();
-    this.binaryScientific = `${this.binaryInteger}.${this.binaryFractional}`;
+    this.binaryScientific = this._binaryScientificRepr();
     this.exponentBits = this._computeExponentBits();
     this.exponent = this._computeExponent();
     this.mantissa = this._computeMantissa();
-    this.IEEE754 = `${this.binarySign}${this.exponent}${this.mantissa}`;
+    this.IEEE754 = this._IEEE754_2008Repr();
+    this.storedValue = this._trueValueStored();
   }
 
   _integerEqZero() {
@@ -26,30 +27,51 @@ class Binary {
   }
 
   _computeBinaryFraction() {
-    return fractionToBin(this.fraction, MANTISSA, this._integerEqZero());
+    return fractionToBin(
+      this.fraction,
+      this.size.mantissa,
+      this._integerEqZero()
+    );
   }
 
   _computeExponentBits() {
     return this._integerEqZero()
-           ? MANTISSA - this.binaryFractional.length
+           ? this.size.mantissa - this.binaryFractional.length
            : this.binaryInteger.length - 1;
   }
 
   _computeExponent() {
-    return leadingZeros(intToBin(bias(this.exponentBits)));
+    return leadingZeros(
+      intToBin(bias(this.exponentBits, this.size.upper)),
+      this.size.exponent
+    );
   }
 
   _computeMantissa() {
     let s = this.binaryScientific.replace('.', '');
+    let e = this.exponentBits;
     return this._integerEqZero()
-           ? s.slice(-this.exponentBits, -this.exponentBits + MANTISSA)
-           : s.slice(1, MANTISSA + 1,);
+           ? s.slice(-e, -e + this.size.mantissa)
+           : s.slice(1, this.size.mantissa + 1);
+  }
+
+  _binaryScientificRepr() {
+    return `${this.binaryInteger}.${this.binaryFractional}`;
+  }
+
+  _IEEE754_2008Repr() {
+    return `${this.binarySign}${this.exponent}${this.mantissa}`;
+  }
+
+  _trueValueStored() {
+    let sign = this.binarySign === '1' ? '-' : '';
+    return `${sign}${binaryToBaseTen(this.IEEE754.slice(1))}`;
   }
 
   print() {
     console.log('\n');
     console.log(`Value to convert: ${this.value}`);
-    console.log(`Obtained value : ${convertFloat(this.IEEE754)}`);
+    console.log(`Stored in memory: ${this.storedValue}`);
     console.log(`\nBinary repr:`);
     console.log(`\tInteger: \t\t${this.binaryInteger}`);
     console.log(`\tFractional: \t${this.binaryFractional}`);

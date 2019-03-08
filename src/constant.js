@@ -1,11 +1,27 @@
-const RANGE = {
-  '32': {lower: -126, upper: 127},      // simple
-  '64': {lower: -1022, upper: 1023},    // double
-  '128': {lower: -16382, upper: 16383}, // quad
+const RANGES = {
+  '32': {
+    bits: 32,
+    mantissa: 23,
+    exponent: 8,
+    lower: -126,
+    upper: 127,
+  },
+  '64': {
+    bits: 64,
+    mantissa: null,
+    exponent: null,
+    lower: -1022,
+    upper: 1023,
+  },
+  '128': {
+    bits: 128,
+    mantissa: null,
+    exponent: null,
+    lower: -16382,
+    upper: 16383,
+  },
 };
 
-const MANTISSA = 23;
-const EXPONENT = 8;
 const SPECIAL_PATTERNS = {
   '+0': '00000000000000000000000000000000',
   '-0': '10000000000000000000000000000000',
@@ -102,9 +118,8 @@ const TESTED_VALUES = {
     'nearest value': '00000100000001001011010111001011',
     'towards zero': '00000100000001001011010111001010',
     'towards +inf': '00000100000001001011010111001011',
-    'towards -inf': '00000100000001001011010111001010'
-  }
+    'towards -inf': '00000100000001001011010111001010',
+  },
 
-  
 };
 
