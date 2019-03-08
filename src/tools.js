@@ -6,7 +6,20 @@ function split(value) {
 }
 
 function intToBin(value) {
+
+  return value > 500000 ? bigIntToBin(value) : smallIntToBin(value)
+}
+
+function smallIntToBin(value) {
   let result = value ? (value % 2) + intToBin(Math.floor(value / 2)) * 10 : 0;
+  return result.toString();
+}
+
+function bigIntToBin(value) {
+  let div = bigInt(value).divmod(2);
+  let result = bigInt(value).isZero() ? 0 : bigInt(div.remainder).add(
+    bigInt(bigIntToBin(div.quotient)).multiply(10)
+  );
   return result.toString();
 }
 

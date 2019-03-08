@@ -16,6 +16,7 @@ class Binary {
     this.mantissa = this._computeMantissa();
     this.IEEE754 = this._IEEE754_2008Repr();
     this.storedValue = this._trueValueStored();
+    this.conversionError = this._computeConversionError()
   }
 
   _integerEqZero() {
@@ -68,10 +69,15 @@ class Binary {
     return `${sign}${binaryToBaseTen(this.IEEE754.slice(1))}`;
   }
 
+  _computeConversionError() {
+    return this.storedValue - this.value
+  }
+
   print() {
     console.log('\n');
     console.log(`Value to convert: ${this.value}`);
     console.log(`Stored in memory: ${this.storedValue}`);
+    console.log(`Conversion error: ${this.conversionError}`);
     console.log(`\nBinary repr:`);
     console.log(`\tInteger: \t\t${this.binaryInteger}`);
     console.log(`\tFractional: \t${this.binaryFractional}`);
@@ -88,3 +94,4 @@ class Binary {
     return new TestBinary();
   }
 }
+

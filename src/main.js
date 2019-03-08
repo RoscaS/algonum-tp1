@@ -1,9 +1,7 @@
 
+// let tests = Binary.tests();
+// tests.print(verbose=true);
 
-let tests = Binary.tests();
-tests.print(verbose=false);
-
-let b = new Binary("-0.123");
+let b = new Binary("67545673232");
 b.print();
-
 
