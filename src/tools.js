@@ -19,34 +19,26 @@ function leadingZeros(value) {
   return `${range(0, EXPONENT - value.length, '0').join('')}${value}`;
 }
 
-function fractionToBin(value, size) {
+function fractionToBin(value, size, intEqZero) {
   let bin = '';
   value /= (Math.pow(10, value.toString().length));
+  size = intEqZero ? fixSize(value, size) : size;
 
   range(0, size).forEach(() => {
-    let v = value - parseInt(value);
-    bin += (v * 2) > 1 ? '1' : '0';
+    bin += ((value - parseInt(value)) * 2) > 1 ? '1' : '0';
     value *= 2;
   });
+
   return bin;
 }
 
-function fractionToBinUnderOne(value, size){
-  let bin = '';
-  let valueTemp = value;
-  let flag = true;
-  value /= (Math.pow(10, value.toString().length));
-
+function fixSize(value, size, flag=true) {
   while(flag){
-    let v = value - parseInt(value);
-    (v * 2) > 1 ? flag = false : size++;
+    (value - parseInt(value)) * 2 > 1 ? flag = false : size++;
     value *= 2;
-  };
-
-
-  return fractionToBin(valueTemp, size + 1);
+  }
+  return ++size
 }
-
 
 function bias(exponentBits) {
   return (RANGE['32'].upper + exponentBits).toString();
@@ -71,11 +63,11 @@ function convertFloat(tabBin) {
     value += tabBin[index] * Math.pow(2, power);
     power--;
   }
-  
+
   // Bit implicite
   value += 1;
   //console.log("Mantisse : " + value);
   value *= Math.pow(2, this.convertExponant(tabBin));
-  
+
   return value;
 }

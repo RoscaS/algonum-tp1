@@ -42,12 +42,17 @@ class TestBinary {
     });
   }
 
-  print() {
-    console.log(`\n\n${header('TESTS START')}`);
-    console.log(header(`FAILED (${this.rawTests.failed.length})`));
-    this._display(this.rawTests.failed);
-    console.log(header(`PASSED (${this.rawTests.passed.length})`));
-    this._display(this.rawTests.passed);
-    console.log(`\n${header('TESTS END')}\n`);
+  print(verbose=true) {
+    if (verbose) {
+      console.log(`\n\n${header('TESTS START')}`);
+      console.log(header(`FAILED (${this.rawTests.failed.length})`));
+      this._display(this.rawTests.failed);
+      console.log(header(`PASSED (${this.rawTests.passed.length})`));
+      this._display(this.rawTests.passed);
+      console.log(`${header('TESTS END')}\n`);
+    }
+    console.log('\n\nTests overview:');
+    console.log(`failed: ${this.rawTests.failed.length}`);
+    console.log(`passed: ${this.rawTests.passed.length}`);
   }
 }

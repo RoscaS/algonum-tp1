@@ -1,17 +1,49 @@
 
 class Binary {
   constructor(stringValue) {
-    let splitted = split(stringValue);
     this.value = stringValue;
-    this.binarySign = splitted.sign;
-    this.isUnderOne = splitted.integer == 0;
-    this.binaryInteger = this.isUnderOne ? '' : intToBin(splitted.integer);
-    this.binaryFractional = this.isUnderOne ? fractionToBinUnderOne(splitted.fraction, MANTISSA) : fractionToBin(splitted.fraction, MANTISSA);
+    this.splitted = split(this.value);
+
+    this.integer = this.splitted.integer;
+    this.fraction = this.splitted.fraction;
+
+    this.binarySign = this.splitted.sign;
+    this.binaryInteger = this._computeBinaryInteger();
+    this.binaryFractional = this._computeBinaryFraction();
     this.binaryScientific = `${this.binaryInteger}.${this.binaryFractional}`;
-    this.exponentBits = !this.isUnderOne ? this.binaryInteger.length - 1 : MANTISSA - this.binaryFractional.length;
-    this.exponent = leadingZeros(intToBin(bias(this.exponentBits)));
-    this.mantissa = this.isUnderOne ? `${this.binaryInteger}${this.binaryFractional}`.slice(-this.exponentBits, -this.exponentBits + MANTISSA) : `${this.binaryInteger}${this.binaryFractional}`.slice(1, MANTISSA + 1,);
+    this.exponentBits = this._computeExponentBits();
+    this.exponent = this._computeExponent();
+    this.mantissa = this._computeMantissa();
     this.IEEE754 = `${this.binarySign}${this.exponent}${this.mantissa}`;
+  }
+
+  _integerEqZero() {
+    return this.integer === '0';
+  }
+
+  _computeBinaryInteger() {
+    return this._integerEqZero() ? '' : intToBin(this.integer);
+  }
+
+  _computeBinaryFraction() {
+    return fractionToBin(this.fraction, MANTISSA, this._integerEqZero());
+  }
+
+  _computeExponentBits() {
+    return this._integerEqZero()
+           ? MANTISSA - this.binaryFractional.length
+           : this.binaryInteger.length - 1;
+  }
+
+  _computeExponent() {
+    return leadingZeros(intToBin(bias(this.exponentBits)));
+  }
+
+  _computeMantissa() {
+    let s = this.binaryScientific.replace('.', '');
+    return this._integerEqZero()
+           ? s.slice(-this.exponentBits, -this.exponentBits + MANTISSA)
+           : s.slice(1, MANTISSA + 1,);
   }
 
   print() {

@@ -1,10 +1,12 @@
-// let tests = Binary.tests();
-// tests.print();
 
-let b = new Binary("4947000.43");
-b.print();
 
 let tests = Binary.tests();
-tests.print();
+tests.print(verbose=false);
+
+// let b = new Binary("0.0000123");
+// b.print();
+
+// let tests = Binary.tests();
+// tests.print();
 
 
