@@ -43,6 +43,7 @@ function fixSize(value, size) {
 }
 
 function iEEEToBaseTen(power, mantissa) {
+  if (!mantissa.split('').includes('1') && power == -126) return '0';
   let bit = 0;
   let value = 0;
   mantissa.split('').forEach(i => value += i * Math.pow(2, --bit));

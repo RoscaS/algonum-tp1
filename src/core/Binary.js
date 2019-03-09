@@ -1,24 +1,14 @@
 class Binary {
   constructor(stringValue, bits = 32) {
+
     this.bits = RANGES[bits];
     this.value = stringValue;
-    this.splitted = split(this.value);
 
-    this.integer = this.splitted.integer;
-    this.fraction = this.splitted.fraction;
-
-    this.binarySign = this.splitted.sign;
-    this.binaryInteger = this._computeBinaryInteger();
-    this.binaryFractional = this._computeBinaryFraction();
-
-    this.eBitNumber = this._computeExponentBitsNumber();
-    this.biasedExponent = this._computeBiasedExponent();
-
-    this.exponent = this._computeExponent();
-    this.mantissa = this._computeMantissa();
+    SPECIAL_VALUES.includes(this.value)
+      ? this.initZero()
+      : this.init();
 
     this.IEEE754 = this._IEEE754_2008Repr();
-
     this.storedValue = this._trueValueStored();
     this.conversionError = this._computeConversionError();
   }
@@ -85,6 +75,30 @@ class Binary {
 
   _computeConversionError() {
     return this.storedValue - this.value;
+  }
+
+  init() {
+    this.splitted = split(this.value);
+    this.integer = this.splitted.integer;
+    this.fraction = this.splitted.fraction;
+    this.binarySign = this.splitted.sign;
+    this.binaryInteger = this._computeBinaryInteger();
+    this.binaryFractional = this._computeBinaryFraction();
+    this.eBitNumber = this._computeExponentBitsNumber();
+    this.biasedExponent = this._computeBiasedExponent();
+    this.exponent = this._computeExponent();
+    this.mantissa = this._computeMantissa();
+  }
+
+  initZero() {
+    if (this.value[0] === '+') this.value.replace('+', '');
+    this.integer = this.fraction = this.binarySign = '0';
+    this.binaryInteger = this.binaryFractional ='0';
+    this.eBitNumber = '-126';
+    this.biasedExponent = '0';
+    this.exponent = prefixWithZeros(this.bits.exponent -1, '0');
+    this.mantissa = prefixWithZeros(this.bits.mantissa -1, '0');
+    if (this.value[0] === '-') this.binarySign = '1';
   }
 
   print(verbose = true) {

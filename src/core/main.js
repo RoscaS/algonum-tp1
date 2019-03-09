@@ -1,16 +1,21 @@
 
 
-let tests = Binary.tests();
-tests.print(verbose=false); // passe verbose à true pour plus d infos
+// let tests = Binary.tests();
+// tests.print(verbose=false);
 
-let a = new Binary("123.7781", 32);
-a.print(verbose=true);
+// let a = new Binary("10");
+// a.print(verbose=false);
 
-let b = new Binary("4189764.9999", 32);
-b.print(verbose=true);
+// let b = new Binary("3");
+// b.print(verbose=false);
 
+// let c = a.add(b);
 
-let c = a.add(b);
+// c.print(verbose=false);
 
-c.print(verbose=true);
+// let d = new Binary("-0");
+// d.print();
+
+// let e = new Binary("0.32131");
+// e.print();
 

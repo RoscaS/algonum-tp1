@@ -13,24 +13,77 @@
 <body>
 
 <div id="app">
+
   <div class="header">
     <h1><span class="manager">Algo'</span>num</h1>
-    <p>Tp1: codage de nombres</p>
+    <p>Tp1: Codage de nombres & IEEE754-2008</p>
   </div>
 
-  <div class="container">
-    <div class="content">
 
-      <div class="field">
-        <label class="label">Input</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Rien">
+  <section class="section">
+    <div class="columns">
+
+
+      <div class="column is-6" v-for="area in areas">
+
+
+        <div class="box data-area">
+          <div class="columns is-mobile">
+
+            <div class="column is-11">
+              <div v-for="field in area.fields">
+                <div class="columns is-gapless data-line">
+
+                  <div class="column is-2 data-labels">
+                    <a class="button is-static data-label" :class="{'is-small':bits>32}">
+                      {{ field.name }}:
+                    </a>
+                  </div>
+
+                  <div class="column is-9">
+                    <p v-if="field.name === 'Valeur'" class="control">
+                      <input class="input"
+                             :class="{'is-danger':area.invalid, 'is-small':bits>32}"
+                             v-model="area.input"
+                             type="number" placeholder="ex. 263.3">
+                    </p>
+                    <p v-else class="control">
+                      <input class="input result"
+                             :class="{'is-small':bits>32}"
+                             :value="field.value"
+                             type="text"
+                             readonly>
+                    </p>
+                  </div>
+
+                  <div class="column is-2">
+                    <p v-if="field.name !== 'Erreur'" class="control">
+                      <a class="button is-static" :class="{'is-small':bits>32}">
+                        {{ field.size }}
+                      </a>
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="tags are-medium is-pulled-right">
+                <span class="tag area-id">{{area.id}}</span>
+              </div>
+            </div>
+
+          </div>
         </div>
+
       </div>
 
 
     </div>
-  </div>
+  </section>
+
+
 </div>
 
 <script src="static/js/bigInteger.min.js"></script>
@@ -38,6 +91,7 @@
 <script src="core/helpers.js"></script>
 <script src="core/tools.js"></script>
 <script src="core/Binary.js"></script>
+<script src="core/SpecialValue.js"></script>
 <script src="core/test.js"></script>
 <script src="core/main.js"></script>
 <script src="vueApp.js"></script>
