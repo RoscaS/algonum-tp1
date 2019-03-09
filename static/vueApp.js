@@ -12,7 +12,7 @@ let app = new Vue({
         return this.valueRepr.value;
       },
       set(value) {
-        this.valueRepr.value = value;
+        this.valueRepr.x = value;
       },
     },
   },

@@ -3,22 +3,19 @@ const RANGES = {
     bits: 32,
     mantissa: 23,
     exponent: 8,
-    lower: -126,
-    upper: 127,
+    max: 127,
   },
   '64': {
     bits: 64,
-    mantissa: null,
-    exponent: null,
-    lower: -1022,
-    upper: 1023,
+    mantissa: 52,
+    exponent: 11,
+    max: 1023,
   },
   '128': {
     bits: 128,
-    mantissa: null,
-    exponent: null,
-    lower: -16382,
-    upper: 16383,
+    mantissa: 112,
+    exponent: 15,
+    max: 16383,
   },
 };
 
@@ -141,3 +138,4 @@ const TESTED_VALUES = {
 
 };
 
+LIMIT = 500000;

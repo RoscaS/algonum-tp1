@@ -1,6 +1,6 @@
 class Binary {
-  constructor(stringValue, bits=32) {
-    this.size = RANGES[bits];
+  constructor(stringValue, bits = 32) {
+    this.bits = RANGES[bits];
     this.value = stringValue;
     this.splitted = split(this.value);
 
@@ -10,13 +10,42 @@ class Binary {
     this.binarySign = this.splitted.sign;
     this.binaryInteger = this._computeBinaryInteger();
     this.binaryFractional = this._computeBinaryFraction();
-    this.binaryScientific = this._binaryScientificRepr();
-    this.exponentBits = this._computeExponentBits();
+
+    this.eBitNumber = this._computeExponentBitsNumber();
+    this.biasedExponent = this._computeBiasedExponent();
+
     this.exponent = this._computeExponent();
     this.mantissa = this._computeMantissa();
+
     this.IEEE754 = this._IEEE754_2008Repr();
+
     this.storedValue = this._trueValueStored();
-    this.conversionError = this._computeConversionError()
+    this.conversionError = this._computeConversionError();
+  }
+
+  add(other) {
+    let sorted = compareMagnitude(this, other);
+    let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
+    let shifted = shiftPoint(sorted.smaller, shiftAmount);
+
+    let a = sorted.bigger.mantissa;
+    let b = shifted.slice(0, sorted.bigger.bits.mantissa+1);
+
+    console.log(shifted);
+    console.log(a);
+
+    console.log('\n\n');
+
+    let mantissa = addSameSize(a, b);
+
+    console.log(a);
+    console.log(b);
+    console.log(mantissa);
+    let ieee = `0${intToBin(sorted.bigger.biasedExponent)}1${mantissa.slice(1)}`;
+    console.log("\n\n");
+    console.log(ieee);
+    let deci = iEEEToBaseTen(sorted.bigger.eBitNumber, mantissa);
+    console.log(deci);
   }
 
   _integerEqZero() {
@@ -30,34 +59,32 @@ class Binary {
   _computeBinaryFraction() {
     return fractionToBin(
       this.fraction,
-      this.size.mantissa,
-      this._integerEqZero()
+      this.bits.mantissa,
+      this._integerEqZero(),
     );
   }
 
-  _computeExponentBits() {
+  _computeExponentBitsNumber() {
     return this._integerEqZero()
-           ? this.size.mantissa - this.binaryFractional.length
+           ? this.bits.mantissa - this.binaryFractional.length
            : this.binaryInteger.length - 1;
   }
 
+  _computeBiasedExponent() {
+    return this.eBitNumber + this.bits.max;
+  }
+
   _computeExponent() {
-    return leadingZeros(
-      intToBin(bias(this.exponentBits, this.size.upper)),
-      this.size.exponent
-    );
+    let e = intToBin(this.biasedExponent);
+    return prefixWithZeros(this.bits.exponent - e.length, e);
   }
 
   _computeMantissa() {
-    let s = this.binaryScientific.replace('.', '');
-    let e = this.exponentBits;
+    let x = `${this.binaryInteger}${this.binaryFractional}`;
+    let e = this.eBitNumber;
     return this._integerEqZero()
-           ? s.slice(-e, -e + this.size.mantissa)
-           : s.slice(1, this.size.mantissa + 1);
-  }
-
-  _binaryScientificRepr() {
-    return `${this.binaryInteger}.${this.binaryFractional}`;
+           ? x.slice(-e, -e + this.bits.mantissa)
+           : x.slice(1, this.bits.mantissa + 1);
   }
 
   _IEEE754_2008Repr() {
@@ -66,28 +93,29 @@ class Binary {
 
   _trueValueStored() {
     let sign = this.binarySign === '1' ? '-' : '';
-    return `${sign}${binaryToBaseTen(this.IEEE754.slice(1))}`;
+    return `${sign}${iEEEToBaseTen(this.eBitNumber, this.mantissa)}`;
   }
 
   _computeConversionError() {
-    return this.storedValue - this.value
+    return this.storedValue - this.value;
   }
 
-  print() {
+  print(verbose = true) {
     console.log('\n');
     console.log(`Value to convert: ${this.value}`);
-    console.log(`Stored in memory: ${this.storedValue}`);
-    console.log(`Conversion error: ${this.conversionError}`);
-    console.log(`\nBinary repr:`);
-    console.log(`\tInteger: \t\t${this.binaryInteger}`);
-    console.log(`\tFractional: \t${this.binaryFractional}`);
-    console.log(`\tScientific: \t${this.binaryScientific}`);
-    console.log(`\tExponent bits:\t${this.exponentBits}`);
-    console.log('\nIEEE 754-2008:');
-    console.log(`\tSign\t\t(1b): \t${this.binarySign}`);
-    console.log(`\tExponent\t(${this.exponent.length}b): \t${this.exponent}`);
-    console.log(`\tMantissa\t(${this.mantissa.length}b): \t${this.mantissa}`);
-    console.log(`\n\t\t${this.IEEE754}`);
+    if (verbose) {
+      console.log(`Stored in memory: ${this.storedValue}`);
+      console.log(`Conversion error: ${this.conversionError}`);
+      console.log(`\nBinary repr:`);
+      console.log(`\tInteger: \t\t${this.binaryInteger}`);
+      console.log(`\tFractional: \t${this.binaryFractional}`);
+      console.log(`\tExponent bits:\t${this.eBitNumber}`);
+      console.log('\nIEEE 754-2008:');
+      console.log(`\tSign\t\t(1b): \t${this.binarySign}`);
+      console.log(`\tExponent\t(${this.exponent.length}b): \t${this.exponent}`);
+      console.log(`\tMantissa\t(${this.mantissa.length}b): \t${this.mantissa}`);
+    }
+    console.log(`\n\t\t${this.IEEE754}\n\n`);
   }
 
   static tests() {

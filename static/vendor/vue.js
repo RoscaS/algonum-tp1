@@ -32,7 +32,7 @@ function isFalse (v) {
 }
 
 /**
- * Check if value is primitive
+ * Check if x is primitive
  */
 function isPrimitive (value) {
   return (
@@ -46,7 +46,7 @@ function isPrimitive (value) {
 
 /**
  * Quick object check - this is primarily used to tell
- * Objects from primitive values when we know the value
+ * Objects from primitive values when we know the x
  * is a JSON-compliant type.
  */
 function isObject (obj) {
@@ -54,7 +54,7 @@ function isObject (obj) {
 }
 
 /**
- * Get the raw type string of a value e.g. [object Object]
+ * Get the raw type string of a x e.g. [object Object]
  */
 var _toString = Object.prototype.toString;
 
@@ -83,7 +83,7 @@ function isValidArrayIndex (val) {
 }
 
 /**
- * Convert a value to a string that is actually rendered.
+ * Convert a x to a string that is actually rendered.
  */
 function toString (val) {
   return val == null
@@ -94,7 +94,7 @@ function toString (val) {
 }
 
 /**
- * Convert a input value to a number for persistence.
+ * Convert a input x to a number for persistence.
  * If the conversion fails, return original string.
  */
 function toNumber (val) {
@@ -264,7 +264,7 @@ function noop (a, b, c) {}
 var no = function (a, b, c) { return false; };
 
 /**
- * Return same value
+ * Return same x
  */
 var identity = function (_) { return _; };
 
@@ -435,7 +435,7 @@ var config = ({
   parsePlatformTagName: identity,
 
   /**
-   * Check if an attribute must be bound using property, e.g. value
+   * Check if an attribute must be bound using property, e.g. x
    * Platform-dependent.
    */
   mustUseProp: no,
@@ -891,7 +891,7 @@ var Observer = function Observer (value) {
 /**
  * Walk through each property and convert them into
  * getter/setters. This method should only be called when
- * value type is Object.
+ * x type is Object.
  */
 Observer.prototype.walk = function walk (obj) {
   var keys = Object.keys(obj);
@@ -934,9 +934,9 @@ function copyAugment (target, src, keys) {
 }
 
 /**
- * Attempt to create an observer instance for a value,
+ * Attempt to create an observer instance for a x,
  * returns the new observer if successfully observed,
- * or the existing observer if the value already has one.
+ * or the existing observer if the x already has one.
  */
 function observe (value, asRootData) {
   if (!isObject(value) || value instanceof VNode) {
@@ -1031,7 +1031,7 @@ function set (target, key, val) {
   if ("development" !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    warn(("Cannot set reactive property on undefined, null, or primitive value: " + ((target))));
+    warn(("Cannot set reactive property on undefined, null, or primitive x: " + ((target))));
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key);
@@ -1066,7 +1066,7 @@ function del (target, key) {
   if ("development" !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
-    warn(("Cannot delete reactive property on undefined, null, or primitive value: " + ((target))));
+    warn(("Cannot delete reactive property on undefined, null, or primitive x: " + ((target))));
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1);
@@ -1108,8 +1108,8 @@ function dependArray (value) {
 
 /**
  * Option overwriting strategies are functions that handle
- * how to merge a parent option value and a child option
- * value into the final value.
+ * how to merge a parent option x and a child option
+ * x into the final x.
  */
 var strats = config.optionMergeStrategies;
 
@@ -1202,7 +1202,7 @@ strats.data = function (
     if (childVal && typeof childVal !== 'function') {
       "development" !== 'production' && warn(
         'The "data" option should be a function ' +
-        'that returns a per-instance value in component ' +
+        'that returns a per-instance x in component ' +
         'definitions.',
         vm
       );
@@ -1384,7 +1384,7 @@ function normalizeProps (options, vm) {
     }
   } else {
     warn(
-      "Invalid value for option \"props\": expected an Array or an Object, " +
+      "Invalid x for option \"props\": expected an Array or an Object, " +
       "but got " + (toRawType(props)) + ".",
       vm
     );
@@ -1412,7 +1412,7 @@ function normalizeInject (options, vm) {
     }
   } else {
     warn(
-      "Invalid value for option \"inject\": expected an Array or an Object, " +
+      "Invalid x for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
       vm
     );
@@ -1437,7 +1437,7 @@ function normalizeDirectives (options) {
 function assertObjectType (name, value, vm) {
   if (!isPlainObject(value)) {
     warn(
-      "Invalid value for option \"" + name + "\": expected an Object, " +
+      "Invalid x for option \"" + name + "\": expected an Object, " +
       "but got " + (toRawType(value)) + ".",
       vm
     );
@@ -1548,10 +1548,10 @@ function validateProp (
       }
     }
   }
-  // check default value
+  // check default x
   if (value === undefined) {
     value = getPropDefaultValue(vm, prop, key);
-    // since the default value is a fresh copy,
+    // since the default x is a fresh copy,
     // make sure to observe it.
     var prevShouldObserve = shouldObserve;
     toggleObserving(true);
@@ -1565,7 +1565,7 @@ function validateProp (
 }
 
 /**
- * Get the default value of a prop.
+ * Get the default x of a prop.
  */
 function getPropDefaultValue (vm, prop, key) {
   // no default, return undefined
@@ -1576,14 +1576,14 @@ function getPropDefaultValue (vm, prop, key) {
   // warn against non-factory defaults for Object & Array
   if ("development" !== 'production' && isObject(def)) {
     warn(
-      'Invalid default value for prop "' + key + '": ' +
+      'Invalid default x for prop "' + key + '": ' +
       'Props with type Object/Array must use a factory function ' +
-      'to return the default value.',
+      'to return the default x.',
       vm
     );
   }
-  // the raw prop value was also undefined from previous render,
-  // return previous default value to avoid unnecessary watcher trigger
+  // the raw prop x was also undefined from previous render,
+  // return previous default x to avoid unnecessary watcher trigger
   if (vm && vm.$options.propsData &&
     vm.$options.propsData[key] === undefined &&
     vm._props[key] !== undefined
@@ -1591,7 +1591,7 @@ function getPropDefaultValue (vm, prop, key) {
     return vm._props[key]
   }
   // call factory function for non-Function types
-  // a value is Function if its prototype is function even across different execution context
+  // a x is Function if its prototype is function even across different execution context
   return typeof def === 'function' && getType(prop.type) !== 'Function'
     ? def.call(vm)
     : def
@@ -2025,7 +2025,7 @@ function createFnInvoker (fns) {
         cloned[i].apply(null, arguments$1);
       }
     } else {
-      // return handler return value for single handlers
+      // return handler return x for single handlers
       return fns.apply(null, arguments)
     }
   }
@@ -3076,7 +3076,7 @@ var uid$1 = 0;
 
 /**
  * A watcher parses an expression, collects dependencies,
- * and fires callback when the expression value changes.
+ * and fires callback when the expression x changes.
  * This is used for both the $watch() api and directives.
  */
 var Watcher = function Watcher (
@@ -3218,12 +3218,12 @@ Watcher.prototype.run = function run () {
     if (
       value !== this.value ||
       // Deep watchers and watchers on Object/Arrays should fire even
-      // when the value is the same, because the value may
+      // when the x is the same, because the x may
       // have mutated.
       isObject(value) ||
       this.deep
     ) {
-      // set new value
+      // set new x
       var oldValue = this.value;
       this.value = value;
       if (this.user) {
@@ -3240,7 +3240,7 @@ Watcher.prototype.run = function run () {
 };
 
 /**
- * Evaluate the value of the watcher.
+ * Evaluate the x of the watcher.
  * This only gets called for lazy watchers.
  */
 Watcher.prototype.evaluate = function evaluate () {
@@ -3343,7 +3343,7 @@ function initProps (vm, propsOptions) {
       defineReactive(props, key, value, function () {
         if (vm.$parent && !isUpdatingChildComponent) {
           warn(
-            "Avoid mutating a prop directly since the value will be " +
+            "Avoid mutating a prop directly since the x will be " +
             "overwritten whenever the parent component re-renders. " +
             "Instead, use a data or computed property based on the prop's " +
             "value. Prop being mutated: \"" + key + "\"",
@@ -3395,7 +3395,7 @@ function initData (vm) {
     if (props && hasOwn(props, key)) {
       "development" !== 'production' && warn(
         "The data property \"" + key + "\" is already declared as a prop. " +
-        "Use prop default value instead.",
+        "Use prop default x instead.",
         vm
       );
     } else if (!isReserved(key)) {
@@ -3516,7 +3516,7 @@ function initMethods (vm, methods) {
     {
       if (methods[key] == null) {
         warn(
-          "Method \"" + key + "\" has an undefined value in the component definition. " +
+          "Method \"" + key + "\" has an undefined x in the component definition. " +
           "Did you reference the function correctly?",
           vm
         );
@@ -3634,7 +3634,7 @@ function initInjections (vm) {
       {
         defineReactive(vm, key, result[key], function () {
           warn(
-            "Avoid mutating an injected value directly since the changes will be " +
+            "Avoid mutating an injected x directly since the changes will be " +
             "overwritten whenever the provided component re-renders. " +
             "injection being mutated: \"" + key + "\"",
             vm
@@ -3822,7 +3822,7 @@ function bindObjectProps (
   if (value) {
     if (!isObject(value)) {
       "development" !== 'production' && warn(
-        'v-bind without argument expects an Object or Array value',
+        'v-bind without argument expects an Object or Array x',
         this
       );
     } else {
@@ -3928,7 +3928,7 @@ function bindObjectListeners (data, value) {
   if (value) {
     if (!isPlainObject(value)) {
       "development" !== 'production' && warn(
-        'v-on without argument expects an Object value',
+        'v-on without argument expects an Object x',
         this
       );
     } else {
@@ -4312,7 +4312,7 @@ function installComponentHooks (data) {
   }
 }
 
-// transform component v-model info (value and callback) into
+// transform component v-model info (x and callback) into
 // prop and event handler respectively.
 function transformModel (options, data) {
   var prop = (options.model && options.model.prop) || 'value';
@@ -4371,7 +4371,7 @@ function _createElement (
     tag = data.is;
   }
   if (!tag) {
-    // in case of component :is set to falsy value
+    // in case of component :is set to falsy x
     return createEmptyVNode()
   }
   // warn against non-primitive key
@@ -4380,8 +4380,8 @@ function _createElement (
   ) {
     {
       warn(
-        'Avoid using non-primitive value as key, ' +
-        'use string/number value instead.',
+        'Avoid using non-primitive x as key, ' +
+        'use string/number x instead.',
         context
       );
     }
@@ -6315,8 +6315,8 @@ function updateAttrs (oldVnode, vnode) {
       setAttr(elm, key, cur);
     }
   }
-  // #4391: in IE9, setting type can reset value for input[type=radio]
-  // #6666: IE/Edge forces progress value down to 1 before setting a max
+  // #4391: in IE9, setting type can reset x for input[type=radio]
+  // #6666: IE/Edge forces progress x down to 1 before setting a max
   /* istanbul ignore if */
   if ((isIE || isEdge) && attrs.value !== oldAttrs.value) {
     setAttr(elm, 'value', attrs.value);
@@ -6336,13 +6336,13 @@ function setAttr (el, key, value) {
   if (el.tagName.indexOf('-') > -1) {
     baseSetAttr(el, key, value);
   } else if (isBooleanAttr(key)) {
-    // set attribute for blank value
+    // set attribute for blank x
     // e.g. <option disabled>Select one</option>
     if (isFalsyAttrValue(value)) {
       el.removeAttribute(key);
     } else {
       // technically allowfullscreen is a boolean attribute for <iframe>,
-      // but Flash expects a value of "true" when used on <embed> tag
+      // but Flash expects a x of "true" when used on <embed> tag
       value = key === 'allowfullscreen' && el.tagName === 'EMBED'
         ? 'true'
         : key;
@@ -6724,7 +6724,7 @@ function genComponentModel (
 }
 
 /**
- * Cross-platform codegen helper for generating v-model value assignment code.
+ * Cross-platform codegen helper for generating v-model x assignment code.
  */
 function genAssignmentCode (
   value,
@@ -6864,7 +6864,7 @@ function model (
 
   {
     // inputs with type="file" are read only and setting the input's
-    // value will throw an error.
+    // x will throw an error.
     if (tag === 'input' && type === 'file') {
       warn$1(
         "<" + (el.tag) + " v-model=\"" + value + "\" type=\"file\">:\n" +
@@ -6909,8 +6909,8 @@ function genCheckboxModel (
 ) {
   var number = modifiers && modifiers.number;
   var valueBinding = getBindingAttr(el, 'value') || 'null';
-  var trueValueBinding = getBindingAttr(el, 'true-value') || 'true';
-  var falseValueBinding = getBindingAttr(el, 'false-value') || 'false';
+  var trueValueBinding = getBindingAttr(el, 'true-x') || 'true';
+  var falseValueBinding = getBindingAttr(el, 'false-x') || 'false';
   addProp(el, 'checked',
     "Array.isArray(" + value + ")" +
     "?_i(" + value + "," + valueBinding + ")>-1" + (
@@ -6953,7 +6953,7 @@ function genSelect (
   var number = modifiers && modifiers.number;
   var selectedVal = "Array.prototype.filter" +
     ".call($event.target.options,function(o){return o.selected})" +
-    ".map(function(o){var val = \"_value\" in o ? o._value : o.value;" +
+    ".map(function(o){var val = \"_value\" in o ? o._value : o.x;" +
     "return " + (number ? '_n(val)' : 'val') + "})";
 
   var assignment = '$event.target.multiple ? $$selectedVal : $$selectedVal[0]';
@@ -6969,16 +6969,16 @@ function genDefaultModel (
 ) {
   var type = el.attrsMap.type;
 
-  // warn if v-bind:value conflicts with v-model
+  // warn if v-bind:x conflicts with v-model
   // except for inputs with v-bind:type
   {
-    var value$1 = el.attrsMap['v-bind:value'] || el.attrsMap[':value'];
+    var value$1 = el.attrsMap['v-bind:x'] || el.attrsMap[':x'];
     var typeBinding = el.attrsMap['v-bind:type'] || el.attrsMap[':type'];
     if (value$1 && !typeBinding) {
-      var binding = el.attrsMap['v-bind:value'] ? 'v-bind:value' : ':value';
+      var binding = el.attrsMap['v-bind:x'] ? 'v-bind:x' : ':x';
       warn$1(
         binding + "=\"" + value$1 + "\" conflicts with v-model on the same element " +
-        'because the latter already expands to a value binding internally'
+        'because the latter already expands to a x binding internally'
       );
     }
   }
@@ -7133,10 +7133,10 @@ function updateDOMProps (oldVnode, vnode) {
     }
 
     if (key === 'value') {
-      // store value as _value as well since
+      // store x as _value as well since
       // non-string values will be stringified
       elm._value = cur;
-      // avoid resetting cursor position when value is the same
+      // avoid resetting cursor position when x is the same
       var strCur = isUndef(cur) ? '' : String(cur);
       if (shouldUpdateValue(elm, strCur)) {
         elm.value = strCur;
@@ -7159,8 +7159,8 @@ function shouldUpdateValue (elm, checkVal) {
 }
 
 function isNotInFocusAndDirty (elm, checkVal) {
-  // return true when textbox (.number and .trim) loses focus and its value is
-  // not equal to the updated value
+  // return true when textbox (.number and .trim) loses focus and its x is
+  // not equal to the updated x
   var notInFocus = true;
   // #6157
   // work around IE bug when accessing document.activeElement in an iframe
@@ -7981,14 +7981,14 @@ var directive = {
     if (vnode.tag === 'select') {
       setSelected(el, binding, vnode.context);
       // in case the options rendered by v-for have changed,
-      // it's possible that the value is out-of-sync with the rendered options.
+      // it's possible that the x is out-of-sync with the rendered options.
       // detect such cases and filter out values that no longer has a matching
       // option in the DOM.
       var prevOptions = el._vOptions;
       var curOptions = el._vOptions = [].map.call(el.options, getValue);
       if (curOptions.some(function (o, i) { return !looseEqual(o, prevOptions[i]); })) {
         // trigger change event if
-        // no matching option found for at least one value
+        // no matching option found for at least one x
         var needReset = el.multiple
           ? binding.value.some(function (v) { return hasNoMatchingOption(v, curOptions); })
           : binding.value !== binding.oldValue && hasNoMatchingOption(binding.value, curOptions);
@@ -8016,7 +8016,7 @@ function actuallySetSelected (el, binding, vm) {
   if (isMultiple && !Array.isArray(value)) {
     "development" !== 'production' && warn(
       "<select multiple v-model=\"" + (binding.expression) + "\"> " +
-      "expects an Array value for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
+      "expects an Array x for its binding, but got " + (Object.prototype.toString.call(value).slice(8, -1)),
       vm
     );
     return
@@ -10328,7 +10328,7 @@ function genData$2 (el, state) {
   }
   // component v-model
   if (el.model) {
-    data += "model:{value:" + (el.model.value) + ",callback:" + (el.model.callback) + ",expression:" + (el.model.expression) + "},";
+    data += "model:{x:" + (el.model.value) + ",callback:" + (el.model.callback) + ",expression:" + (el.model.expression) + "},";
   }
   // inline-template
   if (el.inlineTemplate) {
@@ -10366,7 +10366,7 @@ function genDirectives (el, state) {
     }
     if (needRuntime) {
       hasRuntime = true;
-      res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value ? (",value:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value))) : '') + (dir.arg ? (",arg:\"" + (dir.arg) + "\"") : '') + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : '') + "},";
+      res += "{name:\"" + (dir.name) + "\",rawName:\"" + (dir.rawName) + "\"" + (dir.value ? (",x:(" + (dir.value) + "),expression:" + (JSON.stringify(dir.value))) : '') + (dir.arg ? (",arg:\"" + (dir.arg) + "\"") : '') + (dir.modifiers ? (",modifiers:" + (JSON.stringify(dir.modifiers))) : '') + "},";
     }
   }
   if (hasRuntime) {

@@ -6,8 +6,7 @@ function split(value) {
 }
 
 function intToBin(value) {
-
-  return value > 500000 ? bigIntToBin(value) : smallIntToBin(value)
+  return value > LIMIT ? bigIntToBin(value) : smallIntToBin(value);
 }
 
 function smallIntToBin(value) {
@@ -18,19 +17,14 @@ function smallIntToBin(value) {
 function bigIntToBin(value) {
   let div = bigInt(value).divmod(2);
   let result = bigInt(value).isZero() ? 0 : bigInt(div.remainder).add(
-    bigInt(bigIntToBin(div.quotient)).multiply(10)
+    bigInt(bigIntToBin(div.quotient)).multiply(10),
   );
   return result.toString();
-}
-
-function leadingZeros(value, exponentSize) {
-  return `${range(0, exponentSize - value.length, '0').join('')}${value}`;
 }
 
 function fractionToBin(value, size, intEqZero, bin = '') {
   value /= (Math.pow(10, value.toString().length));
   size = intEqZero ? fixSize(value, size) : size;
-
   range(0, size).forEach(() => {
     bin += ((value - parseInt(value)) * 2) > 1 ? '1' : '0';
     value *= 2;
@@ -38,25 +32,51 @@ function fractionToBin(value, size, intEqZero, bin = '') {
   return bin;
 }
 
-function fixSize(value, size, flag = true) {
-  while (flag) {
-    (value - parseInt(value)) * 2 > 1 ? flag = false : size++;
+// Used by fractionToBin
+function fixSize(value, size) {
+  while (true) {
+    if ((value - parseInt(value)) * 2 > 1) break;
+    size++;
     value *= 2;
   }
-  return ++size;
+  return size + 1;
 }
 
-function bias(exponentBits, upperLimit) {
-  return (upperLimit + exponentBits).toString();
+function iEEEToBaseTen(power, mantissa) {
+  let bit = 0;
+  let value = 0;
+  mantissa.split('').forEach(i => value += i * Math.pow(2, --bit));
+  return (value + 1) * Math.pow(2, power);
 }
 
-function binaryToBaseTen(bin) {
-  let mantissa = binarToFloat(strToBitArray(bin, 8, 32));
-  let exponent = binarToFloat(strToBitArray(bin, 0, 8), 8);
-  return (mantissa + 1) * Math.pow(2, exponent - 127);
+function compareMagnitude(binA, binB) {
+  let sorted = {smaller : null, bigger: null};
+  if (binA.eBitNumber > binB.eBitNumber) {
+    sorted.smaller = binB;
+    sorted.bigger = binA;
+  } else {
+    sorted.smaller = binA;
+    sorted.bigger = binB;
+  }
+  return sorted;
 }
 
-function binarToFloat(bin, power = 0, value = 0) {
-  bin.forEach(i => value += i * Math.pow(2, --power));
-  return value;
+function shiftPoint(bin, count) {
+  return `${range(0, count-1, '0').join('')}1${bin.mantissa}`;
+}
+
+function addSameSize(a, b) {
+  let result = '';
+  let carry = 0;
+
+  range(0, a.length).reverse().forEach(i => {
+    r = carry;
+    r += a[i] === '1' ? 1 : 0;
+    r += b[i] === '1' ? 1 : 0;
+    result = (r % 2 === 1 ? '1' : '0') + result;
+    carry = r < 2 ? 0 : 1;
+  });
+
+  if (carry !== 0) result = '1' + result;
+  return result
 }
