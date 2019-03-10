@@ -52,7 +52,7 @@
                       <input class="input"
                              :class="{'is-danger':area.invalid, 'is-small':bits>32}"
                              v-model="area.input"
-                             type="number" placeholder="ex. 263.3">
+                             type="number" step="0.1" placeholder="ex. 263.3">
                     </p>
                     <p v-else class="control">
                       <input class="input result"

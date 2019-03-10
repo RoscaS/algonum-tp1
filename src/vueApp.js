@@ -1,5 +1,5 @@
-let validNumber = /^[-+]?[0-9]*\.?[0-9]+$/;
-let leadingZeros = /\b0{2,}/;
+// let REGEX.validNumber = /^[-+]?[0-9]*\.?[0-9]+$/;
+// let LEADING_ZEROS = /\b0{2,}/;
 
 let app = new Vue({
   el: '#app',
@@ -52,7 +52,7 @@ let app = new Vue({
 
   methods: {
     updateFields(area, val) {
-      if (validNumber.test(val) && !leadingZeros.test(val)) {
+      if (REGEX.validNumber.test(val) && !REGEX.leadingZeros.test(val)) {
         // console.log('Bien !');
         area.bin = new Binary(val);
         area.invalid = false;

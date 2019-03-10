@@ -1,3 +1,9 @@
+
+const REGEX = {
+  validNumber: /^[-+]?[0-9]*\.?[0-9]+$/,
+  leadingZeros: /\b0{2,}/
+};
+
 const RANGES = {
   '32': {
     bits: 32,
