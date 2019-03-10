@@ -50,8 +50,9 @@ function iEEEToBaseTen(power, mantissa) {
   if (!mantissa.split('').includes('1') && power == -126) return '0';
   let bit = 0;
   let value = 0;
-  mantissa.split('').forEach(i => value += i * Math.pow(2, --bit));
-  return (value + 1) * Math.pow(2, power);
+  mantissa.length === 25 ? bit++ : bit=0;
+  mantissa.split('').forEach(i => value += i * Math.pow(2, bit--));
+  return (value ) * Math.pow(2, power);
 }
 
 function compareMagnitude(binA, binB) {
@@ -67,8 +68,8 @@ function compareMagnitude(binA, binB) {
 }
 
 function shiftPoint(bin, count) {
-  let end = count > 0 ? count - 1 : 0;
-  return `${range(0, end, '0').join('')}1${bin.mantissa}`;
+  //let end = count > 0 ? count - 1 : 0;
+  return `${range(0, count, '0').join('')}1${bin.mantissa}`;
 }
 
 function addSameSize(a, b) {

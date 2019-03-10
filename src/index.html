@@ -79,10 +79,10 @@
 
                   <div class="column is-10">
                     <p v-if="field.name === 'Valeur'" class="control">
-                      <input class="input "
-                             :class="[inputsSize, {'is-danger':area.invalid}, {'result':area.id === 'C'}]"
+                      <input class="input"
+                             :class="[inputsSize, {'is-danger':area.invalid}]"
+                             :class=""
                              v-model="area.input"
-                             :readonly="area.id === 'C'"
                              type="number" step="0.1" placeholder="ex. 263.3">
                     </p>
                     <p v-else-if="verbose" class="control">
@@ -157,16 +157,6 @@
             <i class="fas" :class="`fa-${i}`"></i>
           </span>
         </div>
-
-        <div v-if="area.id === 'B' && opperation"
-             class="equals-sign"
-             :class="bits.bits == '128' ? 'eq-horizontal' : 'eq-vertical'">
-          <span>
-            <i class="fas fa-equals"></i>
-          </span>
-        </div>
-
-
 
       </div>
     </div>

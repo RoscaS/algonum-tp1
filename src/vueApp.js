@@ -37,9 +37,7 @@ let app = new Vue({
   },
 
   methods: {
-    getArea(id) {
-      return this.areas.filter(area => area.id === id)[0];
-    },
+
     updateFields(area, val) {
       if (REGEX.validNumber.test(val) && !REGEX.leadingZeros.test(val)) {
         area.bin = new Binary(val, this.bits.bits);
@@ -94,9 +92,11 @@ let app = new Vue({
       }
     },
     invalidOpperation() {
-        if (this.opperation) this.userWarning();
+      if (this.areas.length === 3) {
         this.areas = this.areas.slice(0, 2);
         this.opperation = '';
+        this.userWarning();
+      }
     },
     userWarning() {
       if (this.areaA.input === '') this.areaA.invalid = true;
@@ -118,12 +118,10 @@ let app = new Vue({
       area.mantissa = 0;
     },
     resetAll() {
-      this.areas = [];
-      this.areaA = areaObjectBuilder('A');
-      this.areaB = areaObjectBuilder('B');
-      this.areas.push(this.areaA);
-      this.areas.push(this.areaB);
-      this.opperation = '';
+      this.reset(this.areaA);
+      this.reset(this.areaB);
+      this.areaA.input = null;
+      this.areaB.input = null;
     },
     fireTests() {
       let tests = Binary.tests();

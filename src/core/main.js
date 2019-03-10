@@ -3,10 +3,10 @@
 // let tests = Binary.tests();
 // tests.print(verbose=true);
 
-let a = new Binary("2");
+let a = new Binary("12.2");
 a.print(verbose=true);
 
-let b = new Binary("2");
+let b = new Binary("221.123");
 b.print(verbose=true);
 
 let c = a.add(b);
