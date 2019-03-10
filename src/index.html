@@ -148,14 +148,16 @@
           </div>
         </div>
 
-        <div v-if="area.id === 'A'" class="opperation-selection buttons has-addons"
-             :class="bits.bits == '128' ? 'horizontal' : 'vertical'">
-          <span v-for="i in opperations"
-                @click="setOpperation(i)"
-                class="is-outlined button"
-                :class="[{'is-selected':opperation == i}, opperationBtnColor]">
-            <i class="fas" :class="`fa-${i}`"></i>
-          </span>
+        <div v-if="area.id === 'A'" class="column is-1">
+          <div class="opperation-selection buttons has-addons"
+               :class="bits.bits == '128' ? 'horizontal' : 'vertical'">
+            <span v-for="i in opperations"
+                  @click="setOpperation(i)"
+                  class="is-outlined button"
+                  :class="[{'is-selected':opperation == i}, opperationBtnColor]">
+              <i class="fas" :class="`fa-${i}`"></i>
+            </span>
+          </div>
         </div>
 
         <div v-if="area.id === 'B' && opperation"
