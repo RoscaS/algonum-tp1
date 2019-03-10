@@ -28,12 +28,38 @@ section {
     color: var(--orange);
 }
 
-.area-id {
-    background-color: var(--accent) !important;
-    user-select: none;
-    color: white !important;
-    font-weight: bold;
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
+
+.reset-btn {
+    /*margin-bottom: 20px;*/
+}
+
+.bits-selection {
+    margin-left: -65px;
+}
+
+.bits-selection .button {
+    border: 0;
+}
+
+.bits-selection .is-selected {
+    border: 1px solid #209CEE !important;
+}
+
+.bits-selection .is-selected:hover {
+    background-color: transparent !important;
+    color: #209CEE !important;
+    cursor: default;
+}
+
+.tests-link {
+
+}
+
 
 .data-line {
     margin: 10px auto 10px auto !important;
@@ -150,6 +176,4 @@ a. button {
     color: var(--blue);
 }
 
-.reset-btn {
-    margin-bottom: 20px;
-}
+

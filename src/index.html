@@ -21,28 +21,55 @@
   </div>
 
   <section>
-    <button class="button is-danger reset-btn" @click="resetAll()">
-      Reset &nbsp;
-      <i class="fas fa-fw fa-exclamation-circle"></i>
-    </button>
+    <div class="top-nav">
+      <div>
+        <button class="button is-danger reset-btn" @click="resetAll()">
+          Reset &nbsp;
+          <i class="fas fa-fw fa-exclamation-circle"></i>
+        </button>
+        <button class="button reset-btn"
+                :class="verbose ? 'is-success' : 'is-info is-outlined'"
+                @click="toggleVerbose()">
+          Verbose &nbsp;
+          <i class="fas fa-fw fa-info-circle"></i>
+        </button>
+      </div>
+
+      <div class="bits-selection">
+        <div class="buttons has-addons">
+          <span v-for="i in ranges"
+                @click="setBitSize(i.bits)"
+                class="is-outlined button is-info"
+                :class="{'is-selected':bits.bits == i.bits}">
+            {{ i.bits }}b
+          </span>
+        </div>
+      </div>
+
+      <div class="tests-link">
+        <a class="is-pulled-right" @click="fireTests()">
+          Lancer les tests &nbsp;
+          <i class="fas fa-vial"></i>
+        </a>
+      </div>
+    </div>
+
   </section>
 
 
   <section>
-    <div class="columns">
+    <div class="columns is-multiline">
 
-      <div class="column is-6" v-for="area in areas">
-
+      <div class="column" :class="bits.bits < 128 ? 'is-6' : 'is-12'" v-for="area in areas">
         <div class="box data-area">
-
           <div class="columns is-mobile">
 
-            <div class="column is-11">
+            <div class="column is-11" :style="!verbose ? 'height: 75px' : ''">
               <div v-for="field in area.fields">
                 <div class="columns is-gapless data-line">
 
                   <div class="column is-2 data-labels">
-                    <a class="button is-static data-label" :class="{'is-small':bits>32}">
+                    <a class="button is-static data-label" v-if="verbose" :class="inputsSize">
                       {{ field.name }}:
                     </a>
                   </div>
@@ -50,13 +77,14 @@
                   <div class="column is-10">
                     <p v-if="field.name === 'Valeur'" class="control">
                       <input class="input"
-                             :class="{'is-danger':area.invalid, 'is-small':bits>32}"
+                             :class="[inputsSize, {'is-danger':area.invalid}]"
+                             :class=""
                              v-model="area.input"
                              type="number" step="0.1" placeholder="ex. 263.3">
                     </p>
-                    <p v-else class="control">
+                    <p v-else-if="verbose" class="control">
                       <input class="input result"
-                             :class="{'is-small':bits>32}"
+                             :class="inputsSize"
                              :value="field.value"
                              type="text"
                              readonly>
@@ -65,13 +93,13 @@
 
                   <div class="column is-1">
                     <p v-if="field.name === 'Valeur'" class="control">
-                      <a class="button is-static" :class="{'is-small':bits>32}">
+                      <a class="button is-static" :class="inputsSize">
                         {{ field.size }}
                       </a>
                     </p>
-                    <p v-if="field.name === 'IEEE754'" class="control">
+                    <p v-if="field.name === 'IEEE754' && verbose" class="control">
                       <a class="button is-info"
-                         :class="{'is-small':bits>32}"
+                         :class="inputsSize"
                          @click="copyToClipboard(field.value)">
                         <i class="far fa-copy"></i>
                       </a>
@@ -84,7 +112,7 @@
 
           </div>
 
-          <div class="ieee-detail content">
+          <div class="ieee-detail content" :class="inputsSize">
             <div class="sign">
               <h5 class="is-bold">S</h5>
               <p class="display">{{area.sign}}</p>
@@ -121,10 +149,6 @@
 
     </div>
   </section>
-  <a class="is-pulled-right" style="margin-right: 20px" @click="fireTests()">
-    Lancer les tests &nbsp;
-    <i class="fas fa-vial"></i>
-  </a>
 
 
 </div>

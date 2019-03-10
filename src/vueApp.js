@@ -4,7 +4,8 @@
 let app = new Vue({
   el: '#app',
   data: () => ({
-    bits: 32,
+    ranges: RANGES,
+    bits: RANGES['32'],
     areas: [],
     areaA: {
       id: 'A',
@@ -36,6 +37,8 @@ let app = new Vue({
         {value: null, name: 'IEEE754'},
       ],
     },
+    inputsSize: 'is-normal',
+    verbose: false
   }),
   watch: {
     'areaA.input': {
@@ -53,11 +56,9 @@ let app = new Vue({
   methods: {
     updateFields(area, val) {
       if (REGEX.validNumber.test(val) && !REGEX.leadingZeros.test(val)) {
-        // console.log('Bien !');
-        area.bin = new Binary(val);
+        area.bin = new Binary(val, this.bits.bits);
         area.invalid = false;
       } else {
-        // console.log('Pas bien !');
         area.invalid = true;
         this.reset(area);
         return;
@@ -108,6 +109,14 @@ let app = new Vue({
       document.body.removeChild(el);
       alert('Ajouté au presse-papier !');
     },
+    setBitSize(value) {
+      this.bits = this.ranges[value];
+      this.inputsSize = this.bits.bits == 64 ? 'is-small' : 'is-normal';
+      this.resetAll();
+    },
+    toggleVerbose() {
+      this.verbose = !this.verbose;
+    }
 
   },
   mounted() {
