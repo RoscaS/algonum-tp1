@@ -40,7 +40,7 @@ let app = new Vue({
       ],
     },
     inputsSize: 'is-normal',
-    verbose: false,
+    verbose: true,
   }),
   watch: {
     'areaA.input': {
