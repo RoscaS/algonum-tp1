@@ -1,7 +1,7 @@
 
 
 // let tests = Binary.tests();
-// tests.print(verbose=false);
+// tests.print(verbose=true);
 
 // let a = new Binary("10");
 // a.print(verbose=false);

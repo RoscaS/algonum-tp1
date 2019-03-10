@@ -43,7 +43,6 @@ class TestBinary {
   }
 
   print(verbose=true) {
-
     if (verbose) {
       console.log(`\n\n${header('TESTS START')}`);
       console.log(header(`FAILED (${this.rawTests.failed.length})`));

@@ -10,7 +10,10 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
 }
 
-/* HEADER */
+section {
+    margin: 10px 20px 10px 20px !important;
+}
+
 .header {
     padding: 30px 0 50px 0;
     text-align: center;
@@ -76,3 +79,77 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #dbdbdb;
 }
 
+a. button {
+    border-radius: 0 2px 2px 0;
+}
+
+.ieee-detail {
+    display: flex;
+    justify-content: center;
+}
+
+.ieee-detail h5 {
+    user-select: none;
+}
+
+.sign {
+    text-align: center;
+    margin-right: 20px;
+    width: 20px;
+}
+
+
+.exponent {
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.hidden-bit-dot-mantissa {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.hidden-bit {
+    text-align: center;
+    font-weight: bold;
+}
+
+.hidden-bit .display{
+    color: var(--red);
+    width: 20px;
+    background-color: #dbdbdb;
+    margin-left: auto;
+}
+
+.dot {
+    width: 1px;
+    text-align: left;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-right: 10px;
+    font-weight: bolder;
+}
+
+.mantissa {
+    text-align: center;
+    margin-right: auto;
+}
+
+.mantissa .display {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.display {
+    border: 1px solid black;
+}
+
+.converted-value {
+    font-weight: bolder;
+    color: var(--blue);
+}
+
+.reset-btn {
+    margin-bottom: 20px;
+}

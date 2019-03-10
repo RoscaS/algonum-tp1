@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="static/css/bulma/bulma.css">
+  <link rel="stylesheet" href="static/css/fontAwesome/fontAwesome.css">
   <link rel="stylesheet" href="static/css/variables.css">
   <link rel="stylesheet" href="static/css/main.css">
   <script src="static/js/vue.js"></script>
@@ -19,15 +20,21 @@
     <p>Tp1: Codage de nombres & IEEE754-2008</p>
   </div>
 
+  <section>
+    <button class="button is-danger reset-btn" @click="resetAll()">
+      Reset &nbsp;
+      <i class="fas fa-fw fa-exclamation-circle"></i>
+    </button>
+  </section>
 
-  <section class="section">
+
+  <section>
     <div class="columns">
-
 
       <div class="column is-6" v-for="area in areas">
 
-
         <div class="box data-area">
+
           <div class="columns is-mobile">
 
             <div class="column is-11">
@@ -40,7 +47,7 @@
                     </a>
                   </div>
 
-                  <div class="column is-9">
+                  <div class="column is-10">
                     <p v-if="field.name === 'Valeur'" class="control">
                       <input class="input"
                              :class="{'is-danger':area.invalid, 'is-small':bits>32}"
@@ -56,10 +63,17 @@
                     </p>
                   </div>
 
-                  <div class="column is-2">
-                    <p v-if="field.name !== 'Erreur'" class="control">
+                  <div class="column is-1">
+                    <p v-if="field.name === 'Valeur'" class="control">
                       <a class="button is-static" :class="{'is-small':bits>32}">
                         {{ field.size }}
+                      </a>
+                    </p>
+                    <p v-if="field.name === 'IEEE754'" class="control">
+                      <a class="button is-info"
+                         :class="{'is-small':bits>32}"
+                         @click="copyToClipboard(field.value)">
+                        <i class="far fa-copy"></i>
                       </a>
                     </p>
                   </div>
@@ -68,20 +82,49 @@
               </div>
             </div>
 
-            <div class="column">
-              <div class="tags are-medium is-pulled-right">
-                <span class="tag area-id">{{area.id}}</span>
+          </div>
+
+          <div class="ieee-detail content">
+            <div class="sign">
+              <h5 class="is-bold">S</h5>
+              <p class="display">{{area.sign}}</p>
+              <p class="converted-value" v-if="area.sign">
+                <i v-if="area.sign === '1'" class="fas fa-minus"></i>
+                <i v-else class="fas fa-plus"></i>
+              </p>
+            </div>
+            <div class="exponent">
+              <h5 class="is-bold">Exponsant</h5>
+              <p class="display">{{area.exponent}}</p>
+              <p class="converted-value" v-if="area.exponent">{{ eBitNumber(area) }}</p>
+            </div>
+            <div class="hidden-bit-dot-mantissa">
+              <div class="hidden-bit">
+                <h5 class="is-bold is-invisible">hidden</h5>
+                <p class="display">{{ ['+0', '-0', '0'].includes(area.input) ? '0' : '1' }}</p>
+                <p class=""></p>
+              </div>
+              <div class="dot">
+                <h5 class="is-bold is-invisible">hidden</h5>
+                <p class="">.</p>
+                <p class=""></p>
+              </div>
+              <div class="mantissa">
+                <h5 class="is-bold">Mantisse</h5>
+                <p class="display">{{area.mantissa}}</p>
+                <p class="converted-value" v-if="area.mantissa"></p>
               </div>
             </div>
-
           </div>
         </div>
-
       </div>
-
 
     </div>
   </section>
+  <a class="is-pulled-right" style="margin-right: 20px" @click="fireTests()">
+    Lancer les tests &nbsp;
+    <i class="fas fa-vial"></i>
+  </a>
 
 
 </div>
@@ -91,7 +134,6 @@
 <script src="core/helpers.js"></script>
 <script src="core/tools.js"></script>
 <script src="core/Binary.js"></script>
-<script src="core/SpecialValue.js"></script>
 <script src="core/test.js"></script>
 <script src="core/main.js"></script>
 <script src="vueApp.js"></script>
