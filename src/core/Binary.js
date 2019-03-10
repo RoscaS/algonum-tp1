@@ -20,7 +20,9 @@ class Binary {
     let a = shiftPoint(sorted.bigger, 0);
     let b = shiftPoint(sorted.smaller, shiftAmount);
 
-    let deci = toDecimal(sorted.bigger, addSameSize(a, b));
+    let mantissa = addSameSize(a, b);
+
+    let deci = toDecimal(sorted.bigger, mantissa);
     return new Binary(deci.toString());
   }
 
