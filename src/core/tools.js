@@ -23,22 +23,26 @@ function bigIntToBin(value) {
 }
 
 function fractionToBin(value, size, intEqZero, bin = '') {
+  // console.log('fractionToBin: ');
   value /= (Math.pow(10, value.toString().length));
   size = intEqZero ? fixSize(value, size) : size;
   range(0, size).forEach(() => {
     bin += ((value - parseInt(value)) * 2) > 1 ? '1' : '0';
     value *= 2;
   });
+  // console.log(bin);
   return bin;
 }
 
 // Used by fractionToBin
 function fixSize(value, size) {
+  // console.log('fixSize: ');
   while (true) {
     if ((value - parseInt(value)) * 2 > 1) break;
     size++;
     value *= 2;
   }
+  // console.log(size+1);
   return size + 1;
 }
 

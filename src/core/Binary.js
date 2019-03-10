@@ -20,7 +20,9 @@ class Binary {
 
     let a = sorted.bigger.mantissa;
     let b = shifted.slice(0, sorted.bigger.bits.mantissa+1);
+
     let mantissa = addSameSize(a, b);
+
     let deci = iEEEToBaseTen(sorted.bigger.eBitNumber, mantissa);
     return new Binary(deci.toString());
   }

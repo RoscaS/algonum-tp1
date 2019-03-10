@@ -1,6 +1,3 @@
-// let REGEX.validNumber = /^[-+]?[0-9]*\.?[0-9]+$/;
-// let LEADING_ZEROS = /\b0{2,}/;
-
 let app = new Vue({
   el: '#app',
   data: () => ({
@@ -8,37 +5,11 @@ let app = new Vue({
     bits: RANGES['32'],
     opperations: OPPERATIONS,
     opperation: '',
+    opperationBtnColor: 'is-info',
     areas: [],
-    areaA: {
-      id: 'A',
-      input: null,
-      invalid: false,
-      bin: null,
-      sign: 0,
-      exponent: 0,
-      mantissa: 0,
-      fields: [
-        {name: 'Valeur'},
-        {value: null, name: 'En mémoire'},
-        {value: null, name: 'Erreur'},
-        {value: null, name: 'IEEE754'},
-      ],
-    },
-    areaB: {
-      id: 'B',
-      input: null,
-      invalid: false,
-      bin: null,
-      sign: 0,
-      exponent: 0,
-      mantissa: 0,
-      fields: [
-        {name: 'Valeur'},
-        {value: null, name: 'En mémoire'},
-        {value: null, name: 'Erreur'},
-        {value: null, name: 'IEEE754'},
-      ],
-    },
+    areaA: areaObjectBuilder('A'),
+    areaB: areaObjectBuilder('B'),
+    areaC: areaObjectBuilder('C'),
     inputsSize: 'is-normal',
     verbose: true,
   }),
@@ -53,9 +24,20 @@ let app = new Vue({
         this.updateFields(this.areaB, val);
       },
     },
+    'areaC.input': {
+      handler: function (val) {
+        this.updateFields(this.areaC, val);
+      },
+    },
+    opperation: {
+      handler: function (val, oldVal) {
+
+      }
+    }
   },
 
   methods: {
+
     updateFields(area, val) {
       if (REGEX.validNumber.test(val) && !REGEX.leadingZeros.test(val)) {
         area.bin = new Binary(val, this.bits.bits);
@@ -63,6 +45,7 @@ let app = new Vue({
       } else {
         area.invalid = true;
         this.reset(area);
+        // this.invalidOpperation();
         return;
       }
       area.fields[1].value = area.bin.storedValue;
@@ -74,9 +57,58 @@ let app = new Vue({
       area.sign = area.fields[3].value.slice(0, 1);
       area.exponent = area.fields[3].value.slice(1, 9);
       area.mantissa = area.fields[3].value.slice(9);
+      this.updateAreaC();
+    },
+    updateAreaC() {
+      if (this.opperationIsValid()) {
+        switch (this.opperation) {
+          case 'divide':
+          case 'times':
+          case 'minus':
+          case 'plus':
+            let result = this.areaA.bin.add(this.areaB.bin);
+            this.areaC.input = result.value;
+            break;
+        }
+      } else {
+        this.invalidOpperation();
+      }
+    },
+    opperationIsValid() {
+      let validInputs = !this.areaA.invalid && !this.areaB.invalid;
+      let notEmpty = this.areaA.input && this.areaB.input;
+      return validInputs && notEmpty && this.opperation;
+    },
+    setOpperation(opperation) {
+      this.opperation = this.opperation === opperation ? '' : opperation;
+
+      if (this.opperationIsValid()) {
+        this.updateAreaC();
+        if (this.areas.length === 2) {
+          this.areas.push(this.areaC);
+        }
+      } else {
+        this.invalidOpperation();
+      }
+    },
+    invalidOpperation() {
+      if (this.areas.length === 3) {
+        this.areas = this.areas.slice(0, 2);
+        this.opperation = '';
+        this.userWarning();
+      }
+    },
+    userWarning() {
+      if (this.areaA.input === '') this.areaA.invalid = true;
+      if (this.areaB.input === '') this.areaB.invalid = true;
+      this.opperationBtnColor = 'is-danger';
+      setTimeout(() => {
+        this.opperationBtnColor = 'is-info';
+      }, 200);
     },
     reset(area) {
-      area.bin = null;
+      area.bin = new Binary('0', this.bits.bits);
+      area.input = '';
       area.fields[1].value = null;
       area.fields[2].value = null;
       area.fields[3].value = null;
@@ -93,27 +125,12 @@ let app = new Vue({
     },
     fireTests() {
       let tests = Binary.tests();
-      tests.print(verbose=true);
+      tests.print(verbose = true);
       alert('F12 pour afficher la console.');
     },
     eBitNumber(area) {
       let value = parseInt(area.bin.eBitNumber);
       return value > 0 ? `+${value}` : value;
-    },
-    copyToClipboard(value) {
-      var el = document.createElement('textarea');
-      el.value = value;
-      el.setAttribute('readonly', '');
-      el.style = {position: 'absolute', left: '-9999px'};
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-      alert('Ajouté au presse-papier !');
-    },
-    setOpperation(opperation) {
-      // this.validOpperation();
-      this.opperation = this.opperation === opperation ? '' : opperation;
     },
     setBitSize(value) {
       this.bits = this.ranges[value];
@@ -123,17 +140,13 @@ let app = new Vue({
     toggleVerbose() {
       this.verbose = !this.verbose;
     },
-    validOpperation() {
-      if (!(this.areaA.input && this.areaB.input)) {
-        this.areaA.invalid = true;
-        this.areaB.invalid = true;
-      }
-      return this.opperation;
+    binaryToClipboard(text) {
+      copyToClipboard(text);
+      alert('Ajouté au presse-papier !');
     },
 
-
   },
-  mounted() {
+  created() {
     this.areas.push(this.areaA);
     this.areas.push(this.areaB);
   },

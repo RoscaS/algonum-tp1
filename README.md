@@ -1,9 +1,10 @@
 # AlgoNum TP1: Codage de nombres
 
-## Optionnel: serveur local
+## Optionnel
 
-* `npm i`
-* `npm start`
+* Serveur local:
+    * `npm i`
+    * `npm start`
 
 ## Ressources
 * [Online converter](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
