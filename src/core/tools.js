@@ -36,13 +36,11 @@ function fractionToBin(value, size, intEqZero, bin = '') {
 
 // Used by fractionToBin
 function fixSize(value, size) {
-  // console.log('fixSize: ');
   while (true) {
     if ((value - parseInt(value)) * 2 > 1) break;
     size++;
     value *= 2;
   }
-  // console.log(size+1);
   return size + 1;
 }
 
@@ -67,8 +65,8 @@ function compareMagnitude(binA, binB) {
 }
 
 function shiftPoint(bin, count) {
-  let end = count > 0 ? count - 1 : 0;
-  return `${range(0, end, '0').join('')}1${bin.mantissa}`;
+  let shifted = `${range(0, count, '0').join('')}1${bin.mantissa}`;
+  return shifted.slice(0, bin.bits.mantissa +1);
 }
 
 function addSameSize(a, b) {
@@ -85,4 +83,12 @@ function addSameSize(a, b) {
 
   if (carry !== 0) result = '1' + result;
   return result
+}
+
+function toDecimal(bin, mantissa) {
+  if (!mantissa.split('').includes('1') && bin.eBitNumber == -126) return '0';
+  let bit = mantissa.length === bin.bits.mantissa + 2 ? 1 : 0;
+  let value = 0;
+  mantissa.split('').forEach(i => value += i * Math.pow(2, bit--));
+  return value * Math.pow(2, bin.eBitNumber);
 }

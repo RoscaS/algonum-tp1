@@ -16,14 +16,11 @@ class Binary {
   add(other) {
     let sorted = compareMagnitude(this, other);
     let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
-    let shifted = shiftPoint(sorted.smaller, shiftAmount);
 
-    let a = sorted.bigger.mantissa;
-    let b = shifted.slice(0, sorted.bigger.bits.mantissa+1);
+    let a = shiftPoint(sorted.bigger, 0);
+    let b = shiftPoint(sorted.smaller, shiftAmount);
 
-    let mantissa = addSameSize(a, b);
-
-    let deci = iEEEToBaseTen(sorted.bigger.eBitNumber, mantissa);
+    let deci = toDecimal(sorted.bigger, addSameSize(a, b));
     return new Binary(deci.toString());
   }
 
