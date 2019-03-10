@@ -6,6 +6,8 @@ let app = new Vue({
   data: () => ({
     ranges: RANGES,
     bits: RANGES['32'],
+    opperations: OPPERATIONS,
+    opperation: '',
     areas: [],
     areaA: {
       id: 'A',
@@ -38,7 +40,7 @@ let app = new Vue({
       ],
     },
     inputsSize: 'is-normal',
-    verbose: false
+    verbose: false,
   }),
   watch: {
     'areaA.input': {
@@ -109,6 +111,10 @@ let app = new Vue({
       document.body.removeChild(el);
       alert('Ajouté au presse-papier !');
     },
+    setOpperation(opperation) {
+      // this.validOpperation();
+      this.opperation = this.opperation === opperation ? '' : opperation;
+    },
     setBitSize(value) {
       this.bits = this.ranges[value];
       this.inputsSize = this.bits.bits == 64 ? 'is-small' : 'is-normal';
@@ -116,7 +122,15 @@ let app = new Vue({
     },
     toggleVerbose() {
       this.verbose = !this.verbose;
-    }
+    },
+    validOpperation() {
+      if (!(this.areaA.input && this.areaB.input)) {
+        this.areaA.invalid = true;
+        this.areaB.invalid = true;
+      }
+      return this.opperation;
+    },
+
 
   },
   mounted() {

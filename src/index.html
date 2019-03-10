@@ -146,7 +146,27 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
+  <section>
+    <div class="bottom-nav">
+      <div class="opperation-selection">
+        <div class="buttons has-addons">
+          <span v-for="i in opperations"
+                @click="setOpperation(i)"
+                class="is-outlined button is-info"
+                :class="{'is-selected':opperation == i}">
+            <i class="fas" :class="`fa-${i}`"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section v-if="opperation && !areaA.invalid && !areaB.invalid">
+    <div class="box opperation-box" style="">
+      <h1 class="title">Work In Progress</h1>
     </div>
   </section>
 

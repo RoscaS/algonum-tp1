@@ -25,6 +25,8 @@ const RANGES = {
   },
 };
 
+const OPPERATIONS = ['plus', 'minus', 'times', 'divide'];
+
 const TESTED_VALUES = {
   '263.3': {
     'nearest value': '01000011100000111010011001100110',

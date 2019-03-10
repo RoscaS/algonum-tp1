@@ -176,4 +176,33 @@ a. button {
     color: var(--blue);
 }
 
+.bottom-nav {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
 
+
+.opperation-selection {
+}
+
+.opperation-selection .button {
+    border: 0;
+}
+
+.opperation-selection .is-selected {
+    border: 1px solid #209CEE !important;
+}
+
+.opperation-selection .is-selected:hover {
+    background-color: transparent !important;
+    color: #209CEE !important;
+}
+
+.opperation-box {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 100px;
+    width: 500px;
+}
