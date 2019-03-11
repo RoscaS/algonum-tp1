@@ -189,6 +189,7 @@ class Binary {
 
   initZero() {
     if (this.value[0] === '+') this.value.replace('+', '');
+    if (this.value === '0.0') this.value = '0';
     this.integer = this.fraction = this.binarySign = '0';
     this.binaryInteger = this.binaryFractional = '0';
     this.eBitNumber = '-126';

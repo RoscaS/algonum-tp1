@@ -1,3 +1,10 @@
+/*
+Tristan Seuret
+Nathan Latino
+Jonas
+Sol Rosca
+*/
+
 function split(value) {
   let sign = value[0] === '-' ? '1' : '0';
   let splitted = value.replace('-', '').split('.');

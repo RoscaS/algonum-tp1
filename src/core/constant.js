@@ -1,7 +1,10 @@
 
 const REGEX = {
   validNumber: /^[-+]?[0-9]*\.?[0-9]+$/,
-  leadingZeros: /\b0{2,}/
+  leadingZeros: /\b0{2,}/,
+  zeroDotZeros: /\b0\.0+/,
+  zeroDotZerosNbrs: /\b0\.0+[1-9]+/,
+
 };
 
 const RANGES = {

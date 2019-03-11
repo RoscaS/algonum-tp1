@@ -140,7 +140,7 @@
             <div class="hidden-bit-dot-mantissa">
               <div class="hidden-bit">
                 <h5 class="is-bold is-invisible">hidden</h5>
-                <p class="display">{{ ['+0', '-0', '0'].includes(area.input) ? '0' : '1' }}</p>
+                <p class="display">{{ hiddenBitValidation(area.input) }}</p>
                 <p class=""></p>
               </div>
               <div class="dot">

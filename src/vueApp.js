@@ -42,8 +42,17 @@ let app = new Vue({
 
     updateFields(area, value) {
 
+      if (REGEX.zeroDotZeros.test(value)) {
+        if (!REGEX.zeroDotZerosNbrs.test(value)) {
+          value = '0';
+        }
+      }
+
+      if (value === '0.0') value = '0';
+
       if (this.validInput(value)) {
         area.bin = new Binary(value, this.bits.bits);
+        console.log(value);
         area.invalid = false;
       } else {
         area.invalid = true;
@@ -72,15 +81,12 @@ let app = new Vue({
           case 'minus':
             result = this.areaA.bin.minus(this.areaB.bin);
             break;
-
           case 'divide':
             result = this.areaA.bin.divide(this.areaB.bin);
             break;
-
           case 'times':
             result = this.areaA.bin.multiply(this.areaB.bin);
             break;
-
           case 'plus':
             result = this.areaA.bin.add(this.areaB.bin);
             break;
@@ -93,8 +99,8 @@ let app = new Vue({
     },
     validInput(value) {
       let validNumber = REGEX.validNumber.test(value);
-      let leadingZeros = REGEX.leadingZeros.test(value);
-      return validNumber && !leadingZeros;
+      // let leadingZeros = REGEX.leadingZeros.test(value);
+      return validNumber;
     },
     opperationIsValid() {
       let validInputs = !this.areaA.invalid && !this.areaB.invalid;
@@ -171,6 +177,13 @@ let app = new Vue({
       copyToClipboard(text);
       alert('Ajouté au presse-papier !');
     },
+
+
+    hiddenBitValidation(value) {
+      let a = ['+0', '-0', '0', '0.0'].includes(value);
+      let b = value.startsWith('0.0') && !/[1-9]/.test(value);
+      return a || b ? '1' : '0';
+    }
 
   },
   created() {
