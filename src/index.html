@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="is-clipped">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,6 +30,10 @@
         <button class="button is-danger reset-btn" @click="resetAll()">
           Reset &nbsp;
           <i class="fas fa-fw fa-exclamation-circle"></i>
+        </button>
+        <button class="button is-info" @click="showModal()">
+          À propos &nbsp;
+          <i class="fas fa-fw fa-map"></i>
         </button>
         <button class="button reset-btn"
                 :class="verbose ? 'is-success' : 'is-info is-outlined'"
@@ -179,6 +183,77 @@
       </div>
     </div>
   </section>
+
+
+  <div class="modal content" :class="{'is-active': bordel}">
+    <div class="modal-background"></div>
+    <div class="modal-content box">
+      <h2>Algorithmes numériques:</h2>
+      <h3>Codage de nombres & IEEE754-2008</h3>
+      <small style="float: right;">11 mars 2019</small>
+      <p style="font-weight: bold">Réalisé par (INF2b):</p>
+      <ul>
+        <li>Nathan Latino</li>
+        <li>Tristan Seuret</li>
+        <li>Jonas</li>
+        <li>Sol Rosca</li>
+      </ul>
+      <h5>Contextualisation</h5>
+      <p>
+        Ce TP traite du codage de nombres réels. Le cahier des charges était le suivant:
+      </p>
+        <ul>
+          <li><span style="color:green">Coder les floatants pour un nombre flottant sur m bits donnés par l’utilisateur.</span> <span style="color:red">La valeur de d est à trouver à la volée</span></li>
+          <li><span style="color:green">Implémentez l’addition</span></li>
+          <li><span style="color:green">Implémentez soustraction,multiplication, division etpuissance</span></li>
+          <li><span style="color:green">Trouvez une approximation de π</span></li>
+        </ul>
+      <h5>Méthodologie de développement</h5>
+      <p>
+        Dans un premier temps l'idée était de cerner le fonctionnement de la norme IEEE754 et sa révision de 2008.
+        Une fois le problème assimilé, un premier jet d'implémentation des différentes étapes a rendu possible l'établissement d'une architecture logiciel
+        plus adaptée au problème. À partir de là les ajouts ont été incrémentaux:
+      </p>
+      <ul>
+        <li>Implémentation de la conversion basique</li>
+        <li>Mise au point d'une série de tests contre des valeurs générés par <a href="https://babbage.cs.qc.cuny.edu/IEEE-754/">ce convertisseur en ligne</a></li>
+        <li>Implémentation de l'addition</li>
+        <li>Implémentation de l'multiplication</li>
+        <li>Implémentation de l'division</li>
+        <li>Implémentation de l'soustraction</li>
+        <li>Developpement de l'interface</li>
+        <li>Approximation de Pi</li>
+        <li>Réaliser que le nombre de bits codables étaint dynamique et non statiques</li>
+      </ul>
+      <h5>Conclusion</h5>
+
+      <p>
+        Ce projet fut particulièrement interessant, conceptuellement, mais aussi au niveau du codage
+        qui est probablement le code le plus "technique" et le plus soutenu au niveau du besoin de cohérence
+        des choix faits. Malheureusement les contraintes de temps ne nous ont pas permis de faire une
+        dernière itération de refactor du code qui sera probablement faite après la remise du projet
+        pour le sport et sera trouvable sur le <a href="https://github.com/RoscaS/algonum-tp1">répo github du projet</a>.
+        Pour la même raison ce rapport n'est qu'une ébauche et nous nous en excusons.
+      </p>
+
+      <h5>Sources</h5>
+      <ul style="margin-bottom: 50px">
+        <li>Cours du prof Gobron</li>
+        <li><a href="https://en.wikipedia.org/wiki/IEEE_754">Wikipedia</a></li>
+        <li><a href="https://www.exploringbinary.com/correct-decimal-to-floating-point-using-big-integers/">exploringbinary.com</a></li>
+        <li><a href="http://sandbox.mc.edu/~bennet/cs110/flt/dtof.html">sandbox.mc.edu: float to decimal</a></li>
+        <li><a href="http://sandbox.mc.edu/~bennet/cs110/flt/ftod.html">sandbox.mc.edu: decimal to float</a></li>
+        <li><a href="https://www.youtube.com/watch?v=8afbTaA-gOQ">India rules</a></li>
+        <li><a href="https://www.youtube.com/watch?v=LXF-wcoeT0o">Really they do</a></li>
+        <li><a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">Premier convertisseur</a></li>
+        <li><a href="https://babbage.cs.qc.cuny.edu/IEEE-754/">Second convertisseur (rounding variantes)</a></li>
+        <li><a href="https://google.com">Le bon vieux Google</a></li>
+      </ul>
+
+    </div>
+    <button class="modal-close is-large" aria-label="close" @click="hideModal()">
+    </button>
+  </div>
 
 
 </div>

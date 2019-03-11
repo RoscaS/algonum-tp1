@@ -1,6 +1,5 @@
 // Tested against:
 // https://www.h-schmidt.net/FloatConverter/IEEE754.html
-// http://weitz.de/ieee/
 // https://babbage.cs.qc.cuny.edu/IEEE-754/
 
 class TestBinary {

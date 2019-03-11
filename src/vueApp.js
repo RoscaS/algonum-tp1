@@ -1,6 +1,7 @@
 let app = new Vue({
   el: '#app',
   data: () => ({
+    bordel: false,
     ranges: RANGES,
     bits: RANGES['32'],
     opperations: OPPERATIONS,
@@ -36,6 +37,13 @@ let app = new Vue({
   },
 
   methods: {
+    showModal() {
+      this.bordel = true;
+    },
+    hideModal() {
+      this.bordel = false;
+      console.log('ici')
+    },
     getArea(id) {
       return this.areas.filter(area => area.id === id)[0];
     },
@@ -177,13 +185,12 @@ let app = new Vue({
       copyToClipboard(text);
       alert('Ajouté au presse-papier !');
     },
-
-
     hiddenBitValidation(value) {
       let a = ['+0', '-0', '0', '0.0'].includes(value);
       let b = value.startsWith('0.0') && !/[1-9]/.test(value);
       return a || b ? '1' : '0';
-    }
+    },
+
 
   },
   created() {
