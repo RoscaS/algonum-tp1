@@ -108,7 +108,7 @@ function divideSignificand(a,b)
     console.log("Result : " + result);
     console.log("isBigger : " + isBigger(a,b));
     if(isBigger(a, b)){
-      a = substract(a, b);
+      a = substractBinary(a, b);
       range(0, i).forEach(i => {
         a+='0'; 
       });
@@ -125,7 +125,7 @@ function divideSignificand(a,b)
   return result;
 }
 
-function substract(a, b)
+function substractBinary(a, b)
 {
   let result = '';
   let carry = false;
