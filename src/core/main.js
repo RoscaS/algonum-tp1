@@ -1,20 +1,17 @@
-
-
 // let tests = Binary.tests();
 // tests.print(verbose=true);
 
- let a = new Binary("43.432");
- a.print(verbose=true);
-//
-//
- let b = new Binary("43123.21");
- b.print(verbose=true);
+// let a = new Binary("6");
+// a.print(verbose=false);
 
- let c = a.divide(b);
- c.print();
-//
+// let b = new Binary("2");
+// b.print(verbose=false);
+
 // let c = a.divide(b);
-//
+// c.print(verbose=false);
+
+// let c = a.divide(b);
+
 // c.print(verbose=true);
 
 // let d = new Binary("-0");
@@ -28,7 +25,6 @@
 
 // let c = a.multiply(b);
 // c.print()
-
 
 // console.log(stripTrailingZeros('10100', '0'));
 

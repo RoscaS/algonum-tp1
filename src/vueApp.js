@@ -31,22 +31,25 @@ let app = new Vue({
     },
     opperation: {
       handler: function (val, oldVal) {
-
-      }
-    }
+      },
+    },
   },
 
   methods: {
     getArea(id) {
       return this.areas.filter(area => area.id === id)[0];
     },
-    updateFields(area, val) {
-      if (REGEX.validNumber.test(val) && !REGEX.leadingZeros.test(val)) {
-        area.bin = new Binary(val, this.bits.bits);
+
+    updateFields(area, value) {
+
+      let fixedValue = this.fixInput(area, value);
+
+      if (this.validInput(fixedValue)) {
+        area.bin = new Binary(value, this.bits.bits);
         area.invalid = false;
       } else {
         area.invalid = true;
-        this.reset(area);
+        // this.reset(area);
         // this.invalidOpperation();
         return;
       }
@@ -54,27 +57,56 @@ let app = new Vue({
       area.fields[2].value = area.bin.conversionError;
       area.fields[3].value = area.bin.IEEE754;
 
-      area.fields[0]['size'] = val.length;
+      area.fields[0]['size'] = value.length;
 
       area.sign = area.fields[3].value.slice(0, 1);
       area.exponent = area.fields[3].value.slice(1, 9);
       area.mantissa = area.fields[3].value.slice(9);
       this.updateAreaC();
     },
+
     updateAreaC() {
       if (this.opperationIsValid()) {
+        let result = '';
+
         switch (this.opperation) {
-          case 'divide':
-          case 'times':
+
           case 'minus':
+            break;
+
+          case 'divide':
+            result = this.areaA.bin.divide(this.areaB.bin);
+            break;
+
+          case 'times':
+            result = this.areaA.bin.multiply(this.areaB.bin);
+            break;
+
           case 'plus':
-            let result = this.areaA.bin.add(this.areaB.bin);
-            this.areaC.input = result.value;
+            result = this.areaA.bin.add(this.areaB.bin);
             break;
         }
+        this.areaC.input = result.value;
+
       } else {
         this.invalidOpperation();
       }
+    },
+    fixInput(area, value) {
+      if (value.startsWith('0.')) {
+        let temp = value.slice(2);
+        for (let i of temp) {
+          if (temp[i] !== '0') {
+            return `0.${temp}`
+          }
+        }
+        return '0';
+      }
+    },
+    validInput(value) {
+      let validNumber = REGEX.validNumber.test(value);
+      let leadingZeros = REGEX.leadingZeros.test(value);
+      return validNumber && !leadingZeros;
     },
     opperationIsValid() {
       let validInputs = !this.areaA.invalid && !this.areaB.invalid;
@@ -94,9 +126,9 @@ let app = new Vue({
       }
     },
     invalidOpperation() {
-        if (this.opperation) this.userWarning();
-        this.areas = this.areas.slice(0, 2);
-        this.opperation = '';
+      if (this.opperation) this.userWarning();
+      this.areas = this.areas.slice(0, 2);
+      this.opperation = '';
     },
     userWarning() {
       if (this.areaA.input === '') this.areaA.invalid = true;

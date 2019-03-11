@@ -22,12 +22,14 @@ class Binary {
 
     let mantissa = addSameSize(a, b);
 
-    let deci = toDecimal(sorted.bigger, mantissa);
+    let deci = toDecimal(sorted.bigger.eBitNumber, this.bits.mantissa,
+      mantissa,
+    );
     return new Binary(deci.toString(), this.bits.bits);
   }
 
   multiply(other) {
-    let sign = (this.binarySign + other.binarySign == 1) ? '1' : '0';
+    let sign = getMulSign(this, other);
     let exponent = this.eBitNumber + other.eBitNumber;
 
     let a = stripTrailingZeros(`1${this.mantissa}`);
@@ -66,6 +68,7 @@ class Binary {
     let shiftExponent = sum.length - 1 - Math.abs(a.length - 1 + b.length - 1);
     let normalisedExponent = exponent + shiftExponent;
     let biasedExponent = normalisedExponent + this.bits.max - 1;
+    let eBitNumber = biasedExponent - this.bits.max;
 
     let mantissa = '';
 
@@ -76,32 +79,27 @@ class Binary {
         join('')}`;
     }
 
-    let deci = iEEEToBaseTen2(biasedExponent - 127, mantissa);
+    let deci = `${sign}${toDecimal(eBitNumber, this.bits.mantissa, mantissa)}`;
     return new Binary(deci.toString(), this.bits.bits);
-
   }
 
-  divide(other)
-  {
-    console.log("Expo A : " + this.eBitNumber);
-    console.log("Expo B : " + other.eBitNumber);
-    let newExponent = parseInt(this.eBitNumber) - parseInt(other.eBitNumber);
+  divide(other) {
+    let sign = getMulSign(this, other);
+
+    let eBitNumber = parseInt(this.eBitNumber) - parseInt(other.eBitNumber);
 
     let newSignificandThis = '1' + this.mantissa.toString();
     let newSignificandOther = '1' + other.mantissa.toString();
 
-    let resultSignificand = divideSignificand(newSignificandThis, newSignificandOther);
+    let mantissa = divideSignificand(newSignificandThis, newSignificandOther);
 
-    resultSignificand = resultSignificand[0] === 0 ? 
-                          resultSignificand.slice(1, newSignificandOther.length + 1) :
-                          resultSignificand.slice(0, newSignificandOther.length);
+    mantissa = mantissa[0] === 0
+               ? mantissa.slice(1, newSignificandOther.length + 1)
+               : mantissa.slice(0, newSignificandOther.length);
 
-    this.eBitNumber = newExponent;
-    let deci = toDecimal(this,resultSignificand);
+    let deci = `${sign}${toDecimal(eBitNumber, this.bits.mantissa, mantissa)}`;
 
-    console.log("newExponent : " + newExponent);
-
-    return new Binary(deci.toString());
+    return new Binary(deci.toString(), this.bits.bits);
   }
 
   _integerEqZero() {
