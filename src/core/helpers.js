@@ -24,6 +24,14 @@ function binaryToDecimal(value) {
   return sum;
 }
 
+function stripTrailingZeros(string) {
+  for (let i = string.length; i >= 0; i--) {
+    if (string[i] === '1') {
+      return string.slice(0, ++i);
+    }
+  }
+}
+
 function copyToClipboard(text) {
   var el = document.createElement('textarea');
   el.value = text;

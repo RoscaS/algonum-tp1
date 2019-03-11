@@ -5,8 +5,8 @@ class Binary {
     this.value = stringValue;
 
     SPECIAL_VALUES.includes(this.value)
-      ? this.initZero()
-      : this.init();
+    ? this.initZero()
+    : this.init();
 
     this.IEEE754 = this._IEEE754_2008Repr();
     this.storedValue = this._trueValueStored();
@@ -24,6 +24,67 @@ class Binary {
 
     let deci = toDecimal(sorted.bigger, mantissa);
     return new Binary(deci.toString());
+  }
+
+  //Nathan
+  multiply(other) {
+    let sign = (this.binarySign + other.binarySign == 1) ? '1' : '0';
+    let exponent = this.eBitNumber + other.eBitNumber;
+
+    let a = stripTrailingZeros(`1${this.mantissa}`);
+    let b = stripTrailingZeros(`1${other.mantissa}`);
+
+    let results = [];
+
+    for (let i = b.length; i >= 0; i--) {
+      if (b[i] === '1') {
+        results.push(a);
+      } else {
+        results.push(range(0, a.length, '0').join(''));
+      }
+    }
+
+    let paddedResults = [];
+
+    let leading = b.length;
+    let trailing = 0;
+
+    results.forEach(i => {
+      let f = (len) => range(0, len, '0').join('');
+      paddedResults.push(`${f(leading)}${i}${f(trailing)}`);
+      leading--;
+      trailing++;
+    });
+
+    let tidy = [];
+
+    let model = range(0, paddedResults[0].length, '0').join('');
+
+    paddedResults.forEach(i => {if (i !== model) tidy.push(i);});
+
+    let sum = model;
+
+    tidy.forEach(i => {
+      // console.log(`${binaryToDecimal(sum)} + ${binaryToDecimal(i)} = ${binaryToDecimal(addSameSize(sum, i))}`);
+      sum = addSameSize(sum, i);
+    });
+
+    let shiftSize = sum.length - this.bits.bits -1;
+    let normalisedExponent = exponent + shiftSize;
+    let biasedExponent = normalisedExponent + this.bits.max -1;
+    let binaryExponent = intToBin(biasedExponent.toString());
+    let mantissa = sum.slice(shiftSize);
+    mantissa = mantissa.slice(0, this.bits.mantissa);
+
+    let result = `${sign}${binaryExponent}${mantissa}`;
+
+    console.log(iEEEToBaseTen(biasedExponent, mantissa));
+
+
+
+
+
+
   }
 
   _integerEqZero() {
@@ -94,11 +155,11 @@ class Binary {
   initZero() {
     if (this.value[0] === '+') this.value.replace('+', '');
     this.integer = this.fraction = this.binarySign = '0';
-    this.binaryInteger = this.binaryFractional ='0';
+    this.binaryInteger = this.binaryFractional = '0';
     this.eBitNumber = '-126';
     this.biasedExponent = '0';
-    this.exponent = prefixWithZeros(this.bits.exponent -1, '0');
-    this.mantissa = prefixWithZeros(this.bits.mantissa -1, '0');
+    this.exponent = prefixWithZeros(this.bits.exponent - 1, '0');
+    this.mantissa = prefixWithZeros(this.bits.mantissa - 1, '0');
     if (this.value[0] === '-') this.binarySign = '1';
   }
 

@@ -92,3 +92,7 @@ function toDecimal(bin, mantissa) {
   mantissa.split('').forEach(i => value += i * Math.pow(2, bit--));
   return value * Math.pow(2, bin.eBitNumber);
 }
+
+
+
+
