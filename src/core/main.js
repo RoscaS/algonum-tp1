@@ -3,13 +3,17 @@
 // let tests = Binary.tests();
 // tests.print(verbose=true);
 
-// let a = new Binary("2");
-// a.print(verbose=true);
+ let a = new Binary("43.432");
+ a.print(verbose=true);
 //
-// let b = new Binary("3");
-// b.print(verbose=true);
 //
-// let c = a.add(b);
+ let b = new Binary("43123.21");
+ b.print(verbose=true);
+
+ let c = a.divide(b);
+ c.print();
+//
+// let c = a.divide(b);
 //
 // c.print(verbose=true);
 

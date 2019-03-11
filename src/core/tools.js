@@ -92,3 +92,68 @@ function toDecimal(bin, mantissa) {
   mantissa.split('').forEach(i => value += i * Math.pow(2, bit--));
   return value * Math.pow(2, bin.eBitNumber);
 }
+
+function divideSignificand(a,b)
+{
+  let result = '';
+  let initialLength = a.length;
+
+  range(0, initialLength).forEach(i => {
+    a+='0'; 
+  });
+
+  range(0, b.length).reverse().forEach(i => {
+    console.log("A : " + a);
+    console.log("B : " + b);
+    console.log("Result : " + result);
+    console.log("isBigger : " + isBigger(a,b));
+    if(isBigger(a, b)){
+      a = substract(a, b);
+      range(0, i).forEach(i => {
+        a+='0'; 
+      });
+      result += '1';
+    } 
+    else{
+      result += '0';
+    }
+    b = '0' + b;
+  });
+
+  console.log("Final Result : " + result);
+
+  return result;
+}
+
+function substract(a, b)
+{
+  let result = '';
+  let carry = false;
+
+  range(0, b.length).reverse().forEach(i => {
+    let newA = carry ? parseInt(a[i]) - 1 : a[i];
+    carry = newA < b[i] ? true : false;
+    newA = carry ? parseInt(newA) + 2: newA;
+    console.log("Carry : " + carry + " A[i] : " + newA + " - b[i] : " + b[i]);
+    result = (newA - b[i]).toString() + result;
+  });
+  console.log(result);
+
+  return result
+}
+
+function isBigger(a, b)
+{
+  let i = 0;
+  let isBigger = false;
+  let isLower = false;
+  while(!isBigger && !isLower && i < a.length)
+  {
+    isBigger = a[i] > b[i] ? true : false;
+    isLower = a[i] < b[i] ? true : false; 
+    i++;
+  }
+  isBigger = i === a.length ? true : isBigger;
+
+  return isBigger ? true: false;
+}

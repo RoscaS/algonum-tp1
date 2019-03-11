@@ -26,6 +26,29 @@ class Binary {
     return new Binary(deci.toString());
   }
 
+  divide(other)
+  {
+    console.log("Expo A : " + this.eBitNumber);
+    console.log("Expo B : " + other.eBitNumber);
+    let newExponent = parseInt(this.eBitNumber) - parseInt(other.eBitNumber);
+
+    let newSignificandThis = '1' + this.mantissa.toString();
+    let newSignificandOther = '1' + other.mantissa.toString();
+
+    let resultSignificand = divideSignificand(newSignificandThis, newSignificandOther);
+
+    resultSignificand = resultSignificand[0] === 0 ? 
+                          resultSignificand.slice(1, newSignificandOther.length + 1) :
+                          resultSignificand.slice(0, newSignificandOther.length);
+
+    this.eBitNumber = newExponent;
+    let deci = toDecimal(this,resultSignificand);
+
+    console.log("newExponent : " + newExponent);
+
+    return new Binary(deci.toString());
+  }
+
   _integerEqZero() {
     return this.integer === '0';
   }
