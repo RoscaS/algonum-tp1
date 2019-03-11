@@ -165,3 +165,13 @@ function isBigger(a, b)
 
   return isBigger ? true: false;
 }
+
+
+itemAdditionPi(a, b)
+{
+  let up = Binary(a.toString());
+  let dividend = Binary("8");
+  dividend = dividend.multiply(Binary(n.toString()));
+  dividend = dividend.add(Binary(b.toString()));
+  return up.divide(dividend);
+}

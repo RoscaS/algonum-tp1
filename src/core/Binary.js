@@ -97,11 +97,37 @@ class Binary {
                           resultSignificand.slice(0, newSignificandOther.length);
 
     this.eBitNumber = newExponent;
-    let deci = toDecimal(this,resultSignificand);
 
     console.log("newExponent : " + newExponent);
 
     return new Binary(deci.toString());
+  }
+ 
+  approximatePi()
+  {
+    let pi = Binary("0");
+    let n = 0;
+
+    while(n < MAX_ITERATION)
+    {
+      let firstItem = itemAdditionPi(4, 1);
+      let secondItem = itemAdditionPi(2, 4);
+      let thirdItem = itemAdditionPi(1, 5);
+      let fourthItem = itemAdditionPi(1, 6);
+
+      firstItem = firstItem.minus(secondItem);
+      firstItem = firstItem.minus(thirdtem);
+      firstItem = firstItem.minus(fourthItem);
+
+      let oneSixteenth = ONE_SIXTEENTH;
+      for(let i = 0; i < n; i++){
+        oneSixteenth = oneSixteenth.multiply(ONE_SIXTEENTH);
+      }
+
+      firstItem = firstItem.multiply(oneSixteenth);
+
+      pi = pi.add(firstItem);
+    }
   }
 
   _integerEqZero() {
