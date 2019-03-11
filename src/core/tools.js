@@ -52,6 +52,14 @@ function iEEEToBaseTen(power, mantissa) {
   return (value + 1) * Math.pow(2, power);
 }
 
+function iEEEToBaseTen2(power, mantissa) {
+  if (!mantissa.split('').includes('1') && power == -126) return '0';
+  let bit = mantissa.length === 23 + 2 ? 1 : 0;
+  let value = 0;
+  mantissa.split('').forEach(i => value += i * Math.pow(2, bit--));
+  return value * Math.pow(2, power);
+}
+
 function compareMagnitude(binA, binB) {
   let sorted = {smaller : null, bigger: null};
   if (binA.eBitNumber > binB.eBitNumber) {
