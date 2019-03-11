@@ -167,7 +167,7 @@ function isBigger(a, b)
 }
 
 
-itemAdditionPi(a, b)
+function itemAdditionPi(a, b)
 {
   let up = Binary(a.toString());
   let dividend = Binary("8");
