@@ -27,6 +27,11 @@ class Binary {
   }
 
   multiply(other) {
+
+    if(other.value == 0){
+      return new Binary("0");
+    }
+
     let sign = (this.binarySign + other.binarySign == 1) ? '1' : '0';
     let exponent = this.eBitNumber + other.eBitNumber;
 
@@ -81,10 +86,7 @@ class Binary {
 
   }
 
-  divide(other)
-  {
-    console.log("Expo A : " + this.eBitNumber);
-    console.log("Expo B : " + other.eBitNumber);
+  divide(other){
     let newExponent = parseInt(this.eBitNumber) - parseInt(other.eBitNumber);
 
     let newSignificandThis = '1' + this.mantissa.toString();
@@ -98,36 +100,22 @@ class Binary {
 
     this.eBitNumber = newExponent;
 
-    console.log("newExponent : " + newExponent);
+    let deci = toDecimal(this, resultSignificand);
 
     return new Binary(deci.toString());
   }
- 
-  approximatePi()
-  {
-    let pi = Binary("0");
-    let n = 0;
 
-    while(n < MAX_ITERATION)
-    {
-      let firstItem = itemAdditionPi(4, 1);
-      let secondItem = itemAdditionPi(2, 4);
-      let thirdItem = itemAdditionPi(1, 5);
-      let fourthItem = itemAdditionPi(1, 6);
+  minus(other){
+    let sorted = compareMagnitude(this, other);
+    let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
 
-      firstItem = firstItem.minus(secondItem);
-      firstItem = firstItem.minus(thirdtem);
-      firstItem = firstItem.minus(fourthItem);
+    let a = shiftPoint(sorted.bigger, 0);
+    let b = shiftPoint(sorted.smaller, shiftAmount);
 
-      let oneSixteenth = ONE_SIXTEENTH;
-      for(let i = 0; i < n; i++){
-        oneSixteenth = oneSixteenth.multiply(ONE_SIXTEENTH);
-      }
+    let mantissa = substractBinary(a, b);
 
-      firstItem = firstItem.multiply(oneSixteenth);
-
-      pi = pi.add(firstItem);
-    }
+    let deci = toDecimal(sorted.bigger, mantissa);
+    return new Binary(deci.toString(), this.bits.bits);
   }
 
   _integerEqZero() {

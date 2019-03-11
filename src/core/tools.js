@@ -27,7 +27,7 @@ function fractionToBin(value, size, intEqZero, bin = '') {
   value /= (Math.pow(10, value.toString().length));
   size = intEqZero ? fixSize(value, size) : size;
   range(0, size).forEach(() => {
-    bin += ((value - parseInt(value)) * 2) > 1 ? '1' : '0';
+    bin += ((value - Math.floor(value)) * 2) >= 1 ? '1' : '0';
     value *= 2;
   });
   // console.log(bin);
@@ -37,7 +37,7 @@ function fractionToBin(value, size, intEqZero, bin = '') {
 // Used by fractionToBin
 function fixSize(value, size) {
   while (true) {
-    if ((value - parseInt(value)) * 2 > 1) break;
+    if ((value - parseInt(value)) * 2 >= 1) break;
     size++;
     value *= 2;
   }
@@ -111,10 +111,6 @@ function divideSignificand(a,b)
   });
 
   range(0, b.length).reverse().forEach(i => {
-    console.log("A : " + a);
-    console.log("B : " + b);
-    console.log("Result : " + result);
-    console.log("isBigger : " + isBigger(a,b));
     if(isBigger(a, b)){
       a = substractBinary(a, b);
       range(0, i).forEach(i => {
@@ -128,7 +124,6 @@ function divideSignificand(a,b)
     b = '0' + b;
   });
 
-  console.log("Final Result : " + result);
 
   return result;
 }
@@ -142,10 +137,8 @@ function substractBinary(a, b)
     let newA = carry ? parseInt(a[i]) - 1 : a[i];
     carry = newA < b[i] ? true : false;
     newA = carry ? parseInt(newA) + 2: newA;
-    console.log("Carry : " + carry + " A[i] : " + newA + " - b[i] : " + b[i]);
     result = (newA - b[i]).toString() + result;
   });
-  console.log(result);
 
   return result
 }
@@ -167,11 +160,46 @@ function isBigger(a, b)
 }
 
 
-function itemAdditionPi(a, b)
+function itemAdditionPi(a, b, n)
 {
-  let up = Binary(a.toString());
-  let dividend = Binary("8");
-  dividend = dividend.multiply(Binary(n.toString()));
-  dividend = dividend.add(Binary(b.toString()));
+  let up = new Binary(a.toString());
+  let dividend = new Binary("8");
+  dividend = dividend.multiply(new Binary(n.toString()));
+  dividend = dividend.add(new Binary(b.toString()));
   return up.divide(dividend);
 }
+
+ 
+function approximatePi()
+{
+  let pi = new Binary("0");
+  let n = 0;
+  
+  let oneSixteenth = 0;
+
+  while(n < MAX_ITERATION)
+  {
+    let firstItem = itemAdditionPi(4, 1, n);
+    let secondItem = itemAdditionPi(2, 4, n);
+    let thirdItem = itemAdditionPi(1, 5, n);
+    let fourthItem = itemAdditionPi(1, 6, n);
+
+    firstItem = firstItem.minus(secondItem);
+    firstItem = firstItem.minus(thirdItem);
+    firstItem = firstItem.minus(fourthItem);
+
+    
+
+    oneSixteenth = n <= 1 ? new Binary("1") : oneSixteenth.multiply(new Binary(ONE_SIXTEENTH));
+    oneSixteenth = n == 1 ? new Binary(ONE_SIXTEENTH) : oneSixteenth;
+
+    firstItem = firstItem.multiply(oneSixteenth);
+
+    pi = pi.add(firstItem);
+
+    n++;
+  }
+
+  return pi;
+}
+
