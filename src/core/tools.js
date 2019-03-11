@@ -1,7 +1,10 @@
 /*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
 Tristan Seuret
 Nathan Latino
-Jonas
+Jonas Vallat
 Sol Rosca
 */
 

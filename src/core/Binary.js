@@ -1,3 +1,13 @@
+/*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
+Tristan Seuret
+Nathan Latino
+Jonas Vallat
+Sol Rosca
+*/
+
 class Binary {
   constructor(stringValue, bits = 32) {
 
@@ -11,6 +21,83 @@ class Binary {
     this.IEEE754 = this._IEEE754_2008Repr();
     this.storedValue = this._trueValueStored();
     this.conversionError = this._computeConversionError();
+  }
+
+  _integerEqZero() {
+    return this.integer === '0';
+  }
+
+  _computeBinaryInteger() {
+    return this._integerEqZero() ? '' : intToBin(this.integer);
+  }
+
+  _computeBinaryFraction() {
+    return fractionToBin(
+      this.fraction,
+      this.bits.mantissa,
+      this._integerEqZero(),
+    );
+  }
+
+  _computeExponentBitsNumber() {
+    return this._integerEqZero()
+           ? this.bits.mantissa - this.binaryFractional.length
+           : this.binaryInteger.length - 1;
+  }
+
+  _computeBiasedExponent() {
+    return this.eBitNumber + this.bits.max;
+  }
+
+  _computeExponent() {
+    let e = intToBin(this.biasedExponent);
+    return prefixWithZeros(this.bits.exponent - e.length, e);
+  }
+
+  _computeMantissa() {
+    let x = `${this.binaryInteger}${this.binaryFractional}`;
+    let e = this.eBitNumber;
+    return this._integerEqZero()
+           ? x.slice(-e, -e + this.bits.mantissa)
+           : x.slice(1, this.bits.mantissa + 1);
+  }
+
+  _IEEE754_2008Repr() {
+    return `${this.binarySign}${this.exponent}${this.mantissa}`;
+  }
+
+  _trueValueStored() {
+    let sign = this.binarySign === '1' ? '-' : '';
+    return `${sign}${iEEEToBaseTen(this.eBitNumber, this.mantissa)}`;
+  }
+
+  _computeConversionError() {
+    return this.storedValue - this.value;
+  }
+
+  init() {
+    this.splitted = split(this.value);
+    this.integer = this.splitted.integer;
+    this.fraction = this.splitted.fraction;
+    this.binarySign = this.splitted.sign;
+    this.binaryInteger = this._computeBinaryInteger();
+    this.binaryFractional = this._computeBinaryFraction();
+    this.eBitNumber = this._computeExponentBitsNumber();
+    this.biasedExponent = this._computeBiasedExponent();
+    this.exponent = this._computeExponent();
+    this.mantissa = this._computeMantissa();
+  }
+
+  initZero() {
+    if (this.value[0] === '+') this.value.replace('+', '');
+    if (this.value === '0.0') this.value = '0';
+    this.integer = this.fraction = this.binarySign = '0';
+    this.binaryInteger = this.binaryFractional = '0';
+    this.eBitNumber = '-126';
+    this.biasedExponent = '0';
+    this.exponent = prefixWithZeros(this.bits.exponent - 1, '0');
+    this.mantissa = prefixWithZeros(this.bits.mantissa - 1, '0');
+    if (this.value[0] === '-') this.binarySign = '1';
   }
 
   add(other) {
@@ -28,6 +115,25 @@ class Binary {
   }
 
   minus(other) {
+
+    if (this.value > 0 && other.value < 0) {
+      return this.add(other);
+
+    }
+
+    if (this.value < 0 && other.value > 0) {
+      return this.add(other);
+    }
+
+    let sign = '';
+
+    if (this.value > other.value && other.value < 0) {
+      sign = this.value > other.value ? '-' : '';
+    }
+
+    if (this.value > 0 && other.value > 0) {
+      sign = this.value > other.value ? '' : '-';
+    }
 
     let sorted = compareMagnitude(this, other);
     let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
@@ -120,83 +226,6 @@ class Binary {
     let deci = `${sign}${toDecimal(eBitNumber, this.bits.mantissa, mantissa)}`;
 
     return new Binary(deci.toString(), this.bits.bits);
-  }
-
-  _integerEqZero() {
-    return this.integer === '0';
-  }
-
-  _computeBinaryInteger() {
-    return this._integerEqZero() ? '' : intToBin(this.integer);
-  }
-
-  _computeBinaryFraction() {
-    return fractionToBin(
-      this.fraction,
-      this.bits.mantissa,
-      this._integerEqZero(),
-    );
-  }
-
-  _computeExponentBitsNumber() {
-    return this._integerEqZero()
-           ? this.bits.mantissa - this.binaryFractional.length
-           : this.binaryInteger.length - 1;
-  }
-
-  _computeBiasedExponent() {
-    return this.eBitNumber + this.bits.max;
-  }
-
-  _computeExponent() {
-    let e = intToBin(this.biasedExponent);
-    return prefixWithZeros(this.bits.exponent - e.length, e);
-  }
-
-  _computeMantissa() {
-    let x = `${this.binaryInteger}${this.binaryFractional}`;
-    let e = this.eBitNumber;
-    return this._integerEqZero()
-           ? x.slice(-e, -e + this.bits.mantissa)
-           : x.slice(1, this.bits.mantissa + 1);
-  }
-
-  _IEEE754_2008Repr() {
-    return `${this.binarySign}${this.exponent}${this.mantissa}`;
-  }
-
-  _trueValueStored() {
-    let sign = this.binarySign === '1' ? '-' : '';
-    return `${sign}${iEEEToBaseTen(this.eBitNumber, this.mantissa)}`;
-  }
-
-  _computeConversionError() {
-    return this.storedValue - this.value;
-  }
-
-  init() {
-    this.splitted = split(this.value);
-    this.integer = this.splitted.integer;
-    this.fraction = this.splitted.fraction;
-    this.binarySign = this.splitted.sign;
-    this.binaryInteger = this._computeBinaryInteger();
-    this.binaryFractional = this._computeBinaryFraction();
-    this.eBitNumber = this._computeExponentBitsNumber();
-    this.biasedExponent = this._computeBiasedExponent();
-    this.exponent = this._computeExponent();
-    this.mantissa = this._computeMantissa();
-  }
-
-  initZero() {
-    if (this.value[0] === '+') this.value.replace('+', '');
-    if (this.value === '0.0') this.value = '0';
-    this.integer = this.fraction = this.binarySign = '0';
-    this.binaryInteger = this.binaryFractional = '0';
-    this.eBitNumber = '-126';
-    this.biasedExponent = '0';
-    this.exponent = prefixWithZeros(this.bits.exponent - 1, '0');
-    this.mantissa = prefixWithZeros(this.bits.mantissa - 1, '0');
-    if (this.value[0] === '-') this.binarySign = '1';
   }
 
   print(verbose = true) {

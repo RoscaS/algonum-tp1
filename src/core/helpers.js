@@ -1,3 +1,13 @@
+/*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
+Tristan Seuret
+Nathan Latino
+Jonas Vallat
+Sol Rosca
+*/
+
 function range(start, end, char = null) {
   let array = [...Array(end - start).keys()];
   return array.map(i => char != null ? char : (i + start));

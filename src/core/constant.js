@@ -1,3 +1,12 @@
+/*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
+Tristan Seuret
+Nathan Latino
+Jonas Vallat
+Sol Rosca
+*/
 
 const REGEX = {
   validNumber: /^[-+]?[0-9]*\.?[0-9]+$/,

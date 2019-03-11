@@ -1,3 +1,13 @@
+/*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
+Tristan Seuret
+Nathan Latino
+Jonas Vallat
+Sol Rosca
+*/
+
 let app = new Vue({
   el: '#app',
   data: () => ({
@@ -42,7 +52,6 @@ let app = new Vue({
     },
     hideModal() {
       this.bordel = false;
-      console.log('ici')
     },
     getArea(id) {
       return this.areas.filter(area => area.id === id)[0];
@@ -60,7 +69,6 @@ let app = new Vue({
 
       if (this.validInput(value)) {
         area.bin = new Binary(value, this.bits.bits);
-        console.log(value);
         area.invalid = false;
       } else {
         area.invalid = true;

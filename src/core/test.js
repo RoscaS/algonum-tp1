@@ -1,3 +1,13 @@
+/*
+Objet: Algo Num tp1
+Date: 11 mars 2019
+
+Tristan Seuret
+Nathan Latino
+Jonas Vallat
+Sol Rosca
+*/
+
 // Tested against:
 // https://www.h-schmidt.net/FloatConverter/IEEE754.html
 // https://babbage.cs.qc.cuny.edu/IEEE-754/
