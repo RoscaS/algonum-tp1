@@ -19,10 +19,13 @@
 // let e = new Binary("0.32131");
 // e.print();
 
-let a = new Binary('2');
-let b = new Binary('3');
+// let a = new Binary('3.74');
+// let b = new Binary('123');
 
-let c = a.multiply(b);
+// let c = a.multiply(b);
+// c.print()
 
 
 // console.log(stripTrailingZeros('10100', '0'));
+
+

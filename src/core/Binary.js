@@ -23,10 +23,9 @@ class Binary {
     let mantissa = addSameSize(a, b);
 
     let deci = toDecimal(sorted.bigger, mantissa);
-    return new Binary(deci.toString());
+    return new Binary(deci.toString(), this.bits.bits);
   }
 
-  //Nathan
   multiply(other) {
     let sign = (this.binarySign + other.binarySign == 1) ? '1' : '0';
     let exponent = this.eBitNumber + other.eBitNumber;
@@ -59,31 +58,26 @@ class Binary {
     let tidy = [];
 
     let model = range(0, paddedResults[0].length, '0').join('');
-
     paddedResults.forEach(i => {if (i !== model) tidy.push(i);});
-
     let sum = model;
 
-    tidy.forEach(i => {
-      // console.log(`${binaryToDecimal(sum)} + ${binaryToDecimal(i)} = ${binaryToDecimal(addSameSize(sum, i))}`);
-      sum = addSameSize(sum, i);
-    });
+    tidy.forEach(i => {sum = addSameSize(sum, i);});
 
-    let shiftSize = sum.length - this.bits.bits -1;
-    let normalisedExponent = exponent + shiftSize;
-    let biasedExponent = normalisedExponent + this.bits.max -1;
-    let binaryExponent = intToBin(biasedExponent.toString());
-    let mantissa = sum.slice(shiftSize);
-    mantissa = mantissa.slice(0, this.bits.mantissa);
+    let shiftExponent = sum.length - 1 - Math.abs(a.length - 1 + b.length - 1);
+    let normalisedExponent = exponent + shiftExponent;
+    let biasedExponent = normalisedExponent + this.bits.max - 1;
 
-    let result = `${sign}${binaryExponent}${mantissa}`;
+    let mantissa = '';
 
-    console.log(iEEEToBaseTen(biasedExponent, mantissa));
+    if (sum.length > this.bits.mantissa + 1) {
+      mantissa = sum.slice(0, this.bits.mantissa + 1);
+    } else {
+      mantissa = `${sum}${range(0, this.bits.mantissa + 1 - sum.length, '0').
+        join('')}`;
+    }
 
-
-
-
-
+    let deci = iEEEToBaseTen2(biasedExponent - 127, mantissa);
+    return new Binary(deci.toString(), this.bits.bits);
 
   }
 
