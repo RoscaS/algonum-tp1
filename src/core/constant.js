@@ -140,4 +140,6 @@ const TESTED_VALUES = {
 };
 
 LIMIT = 500000;
+const MAX_ITERATION = 4;
+const ONE_SIXTEENTH = "0.0625";
 const SPECIAL_VALUES = ['0', '+0', '-0'];

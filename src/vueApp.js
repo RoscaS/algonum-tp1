@@ -42,9 +42,7 @@ let app = new Vue({
 
     updateFields(area, value) {
 
-      let fixedValue = this.fixInput(area, value);
-
-      if (this.validInput(fixedValue)) {
+      if (this.validInput(value)) {
         area.bin = new Binary(value, this.bits.bits);
         area.invalid = false;
       } else {
@@ -72,6 +70,7 @@ let app = new Vue({
         switch (this.opperation) {
 
           case 'minus':
+            result = this.areaA.bin.minus(this.areaB.bin);
             break;
 
           case 'divide':
@@ -90,17 +89,6 @@ let app = new Vue({
 
       } else {
         this.invalidOpperation();
-      }
-    },
-    fixInput(area, value) {
-      if (value.startsWith('0.')) {
-        let temp = value.slice(2);
-        for (let i of temp) {
-          if (temp[i] !== '0') {
-            return `0.${temp}`
-          }
-        }
-        return '0';
       }
     },
     validInput(value) {
@@ -160,6 +148,11 @@ let app = new Vue({
     fireTests() {
       let tests = Binary.tests();
       tests.print(verbose = true);
+      alert('F12 pour afficher la console.');
+    },
+    firePi() {
+      let pi = approximatePi();
+      pi.print();
       alert('F12 pour afficher la console.');
     },
     eBitNumber(area) {

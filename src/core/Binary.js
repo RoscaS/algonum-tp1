@@ -14,6 +14,7 @@ class Binary {
   }
 
   add(other) {
+
     let sorted = compareMagnitude(this, other);
     let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
 
@@ -21,15 +22,34 @@ class Binary {
     let b = shiftPoint(sorted.smaller, shiftAmount);
 
     let mantissa = addSameSize(a, b);
+    let eBitNumber = sorted.bigger.eBitNumber;
+    let deci = toDecimal(eBitNumber, this.bits.mantissa, mantissa);
+    return new Binary(deci.toString(), this.bits.bits);
+  }
 
-    let deci = toDecimal(sorted.bigger.eBitNumber, this.bits.mantissa,
-      mantissa,
-    );
+  minus(other) {
+
+    let sorted = compareMagnitude(this, other);
+    let shiftAmount = Math.abs(this.eBitNumber - other.eBitNumber);
+
+    let a = shiftPoint(sorted.bigger, 0);
+    let b = shiftPoint(sorted.smaller, shiftAmount);
+
+    let mantissa = substractBinary(a, b);
+    let eBitNumber = sorted.bigger.eBitNumber;
+
+    let deci = `${toDecimal(eBitNumber, this.bits.mantissa, mantissa)}`;
+
     return new Binary(deci.toString(), this.bits.bits);
   }
 
   multiply(other) {
     let sign = getMulSign(this, other);
+
+    if (other.value == 0) {
+      return new Binary('0');
+    }
+
     let exponent = this.eBitNumber + other.eBitNumber;
 
     let a = stripTrailingZeros(`1${this.mantissa}`);

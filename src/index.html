@@ -51,10 +51,19 @@
       </div>
 
       <div class="tests-link">
-        <a class="is-pulled-right" @click="fireTests()">
-          Lancer les tests &nbsp;
-          <i class="fas fa-vial"></i>
-        </a>
+        <ul>
+          <li>
+            <a class="is-pulled-right" @click="fireTests()">
+              Lancer les tests &nbsp;
+              <i class="fas fa-vial"></i>
+            </a>
+          </li>
+          <li>
+            <a class="is-pulled-right" @click="firePi()">
+              Approximation de Pi
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -165,7 +174,6 @@
             <i class="fas fa-equals"></i>
           </span>
         </div>
-
 
 
       </div>
